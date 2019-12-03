@@ -1,0 +1,254 @@
+{% extends "untitled.html" %}
+{% block body %}
+<!DOCTYPE html>
+
+      <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center">
+            <div class="avatar"><img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
+            <div class="title">
+              <h1 class="h4">Mark Stephen</h1>
+              <p>Web Designer</p>
+            </div>
+          </div>
+          <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+          <ul class="list-unstyled">
+            <li class="active"> <a href="./"><i class="icon-home"></i>Home</a></li>
+            <li><a href="#dashvariants" aria-expanded="false" data-toggle="collapse"> <i class="icon-interface-windows"></i>Dropdown </a>
+              <ul id="dashvariants" class="collapse list-unstyled">
+                <li><a href="#">Page</a></li>
+                <li><a href="#">Page</a></li>
+                <li><a href="#">Page</a></li>
+                <li><a href="#">Page</a></li>
+              </ul>
+            </li>
+            <li> <a href="tables.html"> <i class="icon-grid"></i>Tables </a></li>
+            <li> <a href="charts.html"> <i class="fa fa-bar-chart"></i>Charts </a></li>
+            <li> <a href="forms.html"> <i class="icon-padnote"></i>Forms </a></li>
+            <li> <a href="login.html"> <i class="icon-interface-windows"></i>Login Page</a></li>
+          </ul><span class="heading">Extras</span>
+          <ul class="list-unstyled">
+            <li> <a href="#"> <i class="icon-flask"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-screen"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-mail"></i>Demo </a></li>
+            <li> <a href="#"> <i class="icon-picture"></i>Demo </a></li>
+          </ul>
+        </nav>
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Charts</h2>
+            </div>
+          </header>
+          <!-- Breadcrumb-->
+          <ul class="breadcrumb">
+            <div class="container-fluid">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Charts</li>
+            </div>
+          </ul>
+          <!-- Charts Section-->
+          <section class="charts">
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Line Charts-->
+                <div class="col-lg-8">
+                  <div class="line-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Line Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="lineChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="line-chart-example card no-margin-bottom">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Line Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="lineChartExample1"></canvas>
+                    </div>
+                  </div>
+                  <div class="line-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="lineChartExample2"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Bar Charts-->
+                <div class="col-lg-4">
+                  <div class="bar-chart-example card no-margin-bottom">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Bar Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="barChart1"></canvas>
+                    </div>
+                  </div>
+                  <div class="line-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="barChart2"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="bar-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Bar Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="barChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Doughnut Chart -->
+                <div class="col-lg-6">
+                  <div class="pie-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Doughnut  Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="doughnutChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Pie Chart -->
+                <div class="col-lg-6">
+                  <div class="pie-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Pie  Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="pieChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Polar Chart-->
+                <div class="col-lg-6">
+                  <div class="polar-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Polar Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="polarChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <!-- Radar Chart-->
+                <div class="col-lg-6">
+                  <div class="radar-chart-example card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Radar Chart Example</h3>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="radarChartExample"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Your company &copy; 2017-2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Bootstrapious</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- Javascript files-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/tether.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.cookie.js"> </script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="js/charts-custom.js"></script>
+    <script src="js/front.js"></script>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
+    <!---->
+    <script>
+      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+      e.src='//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+      ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+  </body>
+</html>
+{% endblock %}

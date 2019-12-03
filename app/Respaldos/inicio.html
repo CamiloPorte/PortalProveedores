@@ -1,0 +1,114 @@
+{% extends "untitled.html" %}
+{% block body %}    
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Inicio</h2>
+            </div>
+          </header>
+          <ul class="breadcrumb">
+            <div class="container-fluid">
+              <li class="breadcrumb-item active">Inicio</li>
+            </div>
+          </ul>
+          <!-- Forms Section-->
+          <section class="forms"> 
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Basic Form-->
+                <div class="col-lg-6">
+                  <div class="card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">LOG IN<!--Aqui va el "nombre" del formulario--></h3>
+                    </div>
+                    <div class="card-body">
+                      <p><!--Aqui puede ir cualquier cosa--></p>
+                      <form method="POST" action="/mi_primer_formulario" anctype="multipart/form-data">
+                    <fieldset>
+                    <!-- Form Name -->
+                    <legend>Rellene todos los campos</legend>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="textinput">Email</label>  
+                      <div class="col-md-4">
+                      <input id="textinput" name="textinput" type="text" placeholder="Javier.churrasco@trolltank.cl" class="form-control input-md">
+                      <span class="help-block"><!--Aqui va una ayudita--></span>  
+                      </div>
+                    </div>
+
+                    <!-- Password input-->
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-md-4 control-label" for="passwordinput">Contraseña</label>
+                        <div class="col-md-4">
+                          <input id="passwordinput" name="passwordinput" type="password" placeholder="Clave123" class="form-control input-md">
+                          <span class="help-block"><!--Aqui va una ayudita--></span>
+                        </div>
+                      </div>
+                       <div class="form-group row">       
+                          <div class="col-sm-9 offset-sm-3">
+                            <a href="index"><input href="index" type="button" value="Log in" class="btn btn-primary">
+ <!--                   </div>
+                         <script>
+                          function msg() {
+                            alert("Que paza!");
+                          }
+                          </script>
+                        </div> -->
+					             </fieldset>
+                      </div>
+                    </form>
+                    </div>
+                </div>
+
+                <!-- Horizontal Form-->
+                <div class="col-lg-6">
+                  <div class="card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <button type="button" id="closeCard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard" class="dropdown-menu has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">SIGN UP</h3>
+                    </div>
+                    <div class="card-body">
+                      <p></p>
+                      <form class="form-horizontal">
+                        <div class="form-group row">       
+                          <div class="col-sm-9 offset-sm-3">
+                           <a href="registrarse"> <input href = "registrarse" type="button" value="Registrarse" class="btn btn-primary">
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>CALOPO &copy; 2017-2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Bootstrapious</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+       {% endblock %} 
