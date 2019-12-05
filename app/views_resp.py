@@ -3,7 +3,7 @@
 # Archivo ejemplo.py
 
 from app import app
-from flask import jsonify, render_template, request, redirect
+from flask import render_template, request, redirect
 import numpy as np
 from ctypes import *
 import xml.etree.ElementTree as ET
@@ -12,18 +12,15 @@ TCP_IP = "45.79.37.223"
 TCP_PORT = 25000
 BUFFER_SIZE = 1024
 
-
 def tcp_connect(ip, port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    r = socket.gethostbyname(ip)
-    s.connect((r, port))
-    return s
-
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	r = socket.gethostbyname(ip)
+	s.connect((r, port))
+	return s
 
 def tcp_send(s, message):
-    strlen = str(len(message)).zfill(5)
-    s.send(bytes(strlen + str(message), 'utf-8'))
-
+	strlen = str(len(message)).zfill(5)
+	s.send(bytes(strlen + str(message), 'utf-8'))
 
 def tcp_receive(s):
 	result = b""
@@ -37,33 +34,23 @@ def tcp_receive(s):
 		rec_len -= BUFFER_SIZE
 	return result
 
-
 def get_response_length(message):
 	return int(message[:5])
-
-
 def cut_response_length(message):
-    return message[5:]
-
-
+	return message[5:]
 def get_ott(xmlstring):
-    return ET.fromstring(xmlstring).find("ott").text
-
-
+	return ET.fromstring(xmlstring).find("ott").text
 def get_dat(xmlstring):
 	return ET.fromstring(xmlstring).find("info").find("dat").text
-
-
 def contar(length, text, looking_for):
-    count = 0
-    for char in text:
-        if char == looking_for:
-            count += 1
-    return count
+	count = 0
+	for char in text:
+		if char == looking_for:
+			count += 1
+	return count
 
-
-@app.route('/procesos', methods=['GET'])
-def procesos():
+@app.route('/', methods=["POST", "GET"])
+def formulario():
 
 	s = tcp_connect(TCP_IP, TCP_PORT)
 	message = "<tx id='borja'><req>auten</req><usr>walker</usr><psw>walker</psw></tx>"
@@ -88,9 +75,36 @@ def procesos():
 	for fila in filas:
 		matriz.append(fila.split("|"))
 	print(matriz)
-	return jsonify(matriz=matriz)
+	"""
+	matriz = []
+	aux = []
+	ans =[]
+	ciclos = 0
+	datos = str(texto).split("|")
+	aux.append(datos[0].split("'")[1])
+	for i in range(filas+1):
+	    for j in range(1,3):
+	    	aux.append(datos[j+ciclos])
+	    ciclos = ciclos + 3
+	    aux.append(datos[ciclos].split('~')[0])
+	    matriz.append(aux)
+	    aux =[]
+	    if i <filas:
+ 	   		aux.append(datos[ciclos].split('~')[1])
+	
+
+	for i in range(len(matriz)):
+		if i < len(matriz)-1:
+			if matriz[i][0] != matriz[i+1][0]:
+				ans.append(matriz[i])
+		else:
+			print(matriz[i])
+			ans.append(matriz[i])
+	print(matriz)
+	"""
+	return render_template("tables.html",matriz=matriz)
 
 
-@app.route('/', methods=["GET"])
-def formulario():
-    return render_template("tables.html")
+
+
+
