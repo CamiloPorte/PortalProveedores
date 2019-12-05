@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import socket
 TCP_IP = "45.79.37.223"
 TCP_PORT = 25000
-BUFFER_SIZE = 1024 * 100
+BUFFER_SIZE = 1024
 
 def tcp_connect(ip, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,12 +23,25 @@ def tcp_send(s, message):
 	s.send(bytes(strlen + str(message), 'utf-8'))
 
 def tcp_receive(s):
-	return s.recv(BUFFER_SIZE)
+	result = b""
+	received = s.recv(BUFFER_SIZE)
+	result += received
+	rec_len = get_response_length(received)
+	rec_len -= BUFFER_SIZE
+	while rec_len > 0:
+		received = s.recv(BUFFER_SIZE)
+		result += received
+		rec_len -= BUFFER_SIZE
+	return result
 
+def get_response_length(message):
+	return int(message[:5])
 def cut_response_length(message):
 	return message[5:]
 def get_ott(xmlstring):
 	return ET.fromstring(xmlstring).find("ott").text
+def get_dat(xmlstring):
+	return ET.fromstring(xmlstring).find("info").find("dat").text
 def contar(length, text, looking_for):
 	count = 0
 	for char in text:
@@ -55,14 +68,19 @@ def formulario():
 	xml_request += "</tx>"
 	tcp_send(s, xml_request)
 	xml_received = cut_response_length(tcp_receive(s))
-	texto = xml_received
-	filas = contar(len(texto),texto,'~') 
+	print(xml_received)
+	texto = get_dat(xml_received)
+	filas = texto.split("~")
+	matriz = []
+	for fila in filas:
+		matriz.append(fila.split("|"))
+	print(matriz)
+	"""
 	matriz = []
 	aux = []
 	ans =[]
 	ciclos = 0
-
-	datos = str(texto).split('|')
+	datos = str(texto).split("|")
 	aux.append(datos[0].split("'")[1])
 	for i in range(filas+1):
 	    for j in range(1,3):
@@ -82,8 +100,9 @@ def formulario():
 		else:
 			print(matriz[i])
 			ans.append(matriz[i])
-	print(ans)
-	return render_template("tables.html",matriz=ans)
+	print(matriz)
+	"""
+	return render_template("tables.html",matriz=matriz)
 
 
 
