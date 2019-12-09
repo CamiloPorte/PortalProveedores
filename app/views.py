@@ -30,11 +30,17 @@ def tcp_receive(s):
 	received = s.recv(BUFFER_SIZE)
 	result += received
 	rec_len = get_response_length(received)
-	rec_len -= BUFFER_SIZE
+	#print("rec_len: ", rec_len)
+	#print("received: ", received)
+	response_length = len(received)
+	rec_len -= response_length
 	while rec_len > 0:
 		received = s.recv(BUFFER_SIZE)
 		result += received
-		rec_len -= BUFFER_SIZE
+		response_length = len(received)
+		rec_len -= response_length
+		#print("rec_len: ", rec_len)
+		#print("received: ", received)
 	return result
 
 
@@ -81,13 +87,13 @@ def procesos():
 	xml_request += "</tx>"
 	tcp_send(s, xml_request)
 	xml_received = cut_response_length(tcp_receive(s))
-	print(xml_received)
+	#print("xml_received: ", xml_received)
 	texto = get_dat(xml_received)
 	filas = texto.split("~")
 	matriz = []
 	for fila in filas:
 		matriz.append(fila.split("|"))
-	print(matriz)
+	#print(matriz)
 	return jsonify(matriz=matriz)
 
 
