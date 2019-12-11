@@ -76,6 +76,16 @@
   </div>
   <!-- Javascript files-->
   <script type="text/javascript">
+    var ACCIONES = {
+      {% for k, v in acciones.items() %}
+      "{{k}}" : "{{v}}",
+      {% endfor %}
+    };
+    var STATUS = {
+      {% for k, v in status.items() %}
+      "{{k}}" : "{{v}}",
+      {% endfor %}
+    };
     var intervalID = setInterval(update_values, 5000);
     function update_values() {
       var url_string = window.location.href
@@ -97,16 +107,29 @@
       intervalID = setInterval(update_values, 5000);
     }
     function tableCreate(data) {
+      ACCION = 2;
+      ESTADO = 3;
+      PROGRESO = 5;
       var percents = [];
       var table = document.getElementById('myTable-tbody');      
       for (let rows = 0; rows < data.matriz.length; rows++) {
         var row = table.insertRow();
       for (let columns = 0; columns < 6; columns++) {
         var cell = row.insertCell(columns);
-        cell.innerHTML = data.matriz[rows][columns];
-        if (columns == 5) {
-          cell.innerHTML += "%";
-          percents.push(parseInt(data.matriz[rows][columns]));
+        switch (columns) {
+          case ACCION:
+            cell.innerHTML = ACCIONES[data.matriz[rows][columns]];
+          break;
+          case ESTADO:
+            cell.innerHTML = STATUS[data.matriz[rows][columns]];
+          break;
+          case PROGRESO:
+            cell.innerHTML = data.matriz[rows][columns] + "%";
+            percents.push(parseInt(data.matriz[rows][columns]));
+          break;
+          default:
+            cell.innerHTML = data.matriz[rows][columns];
+          break;
         }
       }
      }

@@ -105,7 +105,7 @@ def procesos():
 	xml_received = tcp.receive(s)
 	#Procesar xml
 	check_data = []
-	row_list = ET.fromstring(xml_received).find("info").find("dat").findall("row")
+	row_list = get_rowlist(xml_received)
 	for row in row_list:
 		ncu = row.find("ncu").text
 		lid = row.find("lid").text
@@ -144,4 +144,27 @@ def procesos():
 def camino():
 	cliente_name = request.args.get("name")
 	cliente_id = request.args.get("id")
-	return render_template("tables.html", name=cliente_name)
+	#Conectar
+	s = tcp.connect(TCP_IP, TCP_PORT)
+	ott_id = enviar_y_obtener_ott(s)
+	xml_maker = armar_xml_desde_query(ott_id, "select acc_id!01, acc_desc!02 from acciones")
+	tcp.send(s, str(xml_maker))
+	xml_received_acc = tcp.receive(s)
+	ott_id = enviar_y_obtener_ott(s)
+	xml_maker_stat = armar_xml_desde_query(ott_id, "select stat_id!01, stat_desc!02 from status")
+	tcp.send(s, str(xml_maker_stat))
+	xml_received_stat = tcp.receive(s)
+	#Obtener acciones
+	rowlist = get_rowlist(xml_received_acc)
+	acciones = {}
+	for row in rowlist:
+		acciones[row.find("f01").text] = row.find("f02").text
+	rowlist = get_rowlist(xml_received_stat)
+	status = {}
+	for row in rowlist:
+		status[row.find("f01").text] = row.find("f02").text
+	#print(acciones, status)
+	return render_template("tables.html", name=cliente_name, acciones=acciones, status=status)
+
+def get_rowlist(xml_string):
+	return ET.fromstring(xml_string).find("info").find("dat").findall("row")
