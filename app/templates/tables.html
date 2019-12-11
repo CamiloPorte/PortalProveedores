@@ -10,15 +10,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <!-- Bootstrap CSS-->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
   <!-- Google fonts - Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
   <!-- theme stylesheet-->
-  <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.default.css') }}" id="theme-stylesheet">
   <!-- Custom stylesheet - for your changes-->
-  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/custom.css') }}">
   <!-- Favicon-->
-  <link rel="shortcut icon" href="img/favicon.ico">
+  <link rel="shortcut icon" href="{{ url_for('static', filename = 'img/favicon.ico') }}">
   <!-- Font Awesome CDN-->
   <!-- you can replace it by local Font Awesome-->
   <script src="https://use.fontawesome.com/99347ac47f.js"></script>
@@ -35,22 +35,21 @@
     <!-- Page Header-->
     <header class="page-header">
       <div class="container-fluid">
-        <h2 class="no-margin-bottom">Caminos</h2>
+        <h2 class="no-margin-bottom">{{name}}</h2>
       </div>
     </header>
     <br>
     <div class="container-fluid">
+      Progreso total
       <div class="progress">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
-          aria-valuemin="0" aria-valuemax="100" style="width: 75%">{{contador}}</div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" id="global-progressbar" role="progressbar" aria-valuenow="75"
+          aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
       </div>
     </div>
     <!-- Breadcrumb-->
     <section class="tables">
       <div class="container-fluid">
-        <div class="row">
           {%for j in range(((matriz|length)/8)|int +1 )%}
-          <div class="col-lg-6">
             <div class="card">
               <div class="card-header d-flex align-items-center">
                 <h3 class="h4">Caminos</h3>
@@ -59,7 +58,8 @@
                 <table class="table" id="myTable">
                   <thead>
                     <tr>
-                      <th>Identificación de camino</th>
+                      <th>ID camino</th>
+                      <th>Empresa</th>
                       <th>Acción</th>
                       <th>Estado</th>
                       <th>Fecha y hora</th>
@@ -71,18 +71,18 @@
                 </table>
               </div>
             </div>
-          </div>
           {%endfor%}
-        </div>
     </section>
   </div>
-  <button onclick="stopRefresh();">Stop</button>
-  <button onclick="startRefresh();">Start</button>
   <!-- Javascript files-->
   <script type="text/javascript">
     var intervalID = setInterval(update_values, 5000);
     function update_values() {
-      $.getJSON($SCRIPT_ROOT + '/procesos',
+      var url_string = window.location.href
+      var url = new URL(url_string);
+      var cliente_id = url.searchParams.get("id");
+      var path = $SCRIPT_ROOT + '/procesos?id=' + cliente_id
+      $.getJSON(path,
         function (data) {
           $('#matriz').text(data.matriz);
           console.log(data);
@@ -97,14 +97,28 @@
       intervalID = setInterval(update_values, 5000);
     }
     function tableCreate(data) {
-      var table = document.getElementById('myTable').getElementsByTagName('tbody')[0];      
-      for (let rows = 0; rows < 6; rows++) {
+      var percents = [];
+      var table = document.getElementById('myTable-tbody');      
+      for (let rows = 0; rows < data.matriz.length; rows++) {
         var row = table.insertRow();
-      for (let columns = 0; columns < 4; columns++) {
+      for (let columns = 0; columns < 6; columns++) {
         var cell = row.insertCell(columns);
         cell.innerHTML = data.matriz[rows][columns];
+        if (columns == 5) {
+          cell.innerHTML += "%";
+          percents.push(parseInt(data.matriz[rows][columns]));
+        }
       }
      }
+     update_progressbar(percents);
+    }
+    function update_progressbar(l) {
+      const arrSum = arr => arr.reduce((a,b) => a + b, 0);
+      var sum = arrSum(l);
+      var percent = sum / l.length;
+      var bar = document.getElementById("global-progressbar");
+      bar.style = "width: " + percent.toString() + "%";
+      bar.innerHTML = percent.toString() + "%";
     }
     function deleteTable() {
       if (confirm("It will be deleted..!!")) {
@@ -112,12 +126,6 @@
       }
     }          
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="js/tether.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.cookie.js"> </script>
-  <script src="js/jquery.validate.min.js"></script>
-  <script src="js/front.js"></script>
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
   <!---->
   <script>

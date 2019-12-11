@@ -42,7 +42,7 @@
             <div class="navbar-holder d-flex align-items-center justify-content-between">
               <!-- Navbar Header-->
               <div class="navbar-header">
-                <div class="brand-text brand-small"><strong>ZOLBIT</strong></div></a>
+                <div class="brand-text brand-small" href="/clientes"><strong>ZOLBIT</strong></div></a>
               </div>
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
@@ -54,27 +54,45 @@
       <div class="page-content">
 
      {% block body %}{% endblock %}
-    <!-- Javascript files-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="/static/js/tether.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.cookie.js"> </script>
-    <script src="/static/js/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="/static/js/charts-home.js"></script>
-    <script src="/static/js/front.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-        <script type="text/javascript">
-          var $SCRIPT_ROOT = {{ request.script_root| tojson | safe }};
-        </script>
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
-    <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='//www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>
+      <!-- Javascript files-->
+      <script src="{{ url_for('static', filename = 'js/jquery-3.4.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename = 'js/tether.min.js') }}"></script>
+      <script src="{{ url_for('static', filename = 'js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ url_for('static', filename = 'js/jquery.cookie.js') }}"> </script>
+      <script src="{{ url_for('static', filename = 'js/jquery.validate.min.js') }}"></script>
+      <script src="{{ url_for('static', filename = 'js/front.js') }}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="{{ url_for('static', filename = 'js/charts-home.js') }}"></script>
+          <script type="text/javascript">
+            var $SCRIPT_ROOT = {{ request.script_root| tojson | safe }};
+          </script>
+      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
+      <script>
+        $(function(){
+            $('#body').css('padding-bottom', $('#footer').height()+'px');   
+        });  
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-XXXXX-X');ga('send','pageview');
+      </script>
+      </div>
+    </div>
+      <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Zolbit &copy; 2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Bootstrapious</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
   </body>
 </html>
