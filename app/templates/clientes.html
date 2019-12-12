@@ -41,11 +41,11 @@
     <br>
     <!-- Breadcrumb-->
     <div class="container-fluid">
-          <div class="list-group">
-            {% for cliente in data %}
-            <a href="/camino?id={{cliente.id}}&name={{cliente.name}}" class="list-group-item list-group-item-action">{{cliente.name}}</a>
-            {% endfor %}
-          </div>
+      <div class="list-group">
+        {% for cliente in data %}
+        <a href="/camino?id={{cliente.id}}&name={{cliente.name}}" class="list-group-item list-group-item-action">{{cliente.name}}</a>
+        {% endfor %}
+      </div>
     </div>
   </div>
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->

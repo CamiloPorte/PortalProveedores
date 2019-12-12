@@ -123,7 +123,7 @@ def procesos():
 			value["emp"] = client_log_ids[value["lid"]]["emp"]
 			value["fil"] = client_log_ids[value["lid"]]["fil"]
 			data.append(value)
-	print("data: ", data)
+	#print("data: ", data)
 	#Procesamiento final
 	tabla = []
 	for fila in data:
@@ -133,7 +133,7 @@ def procesos():
 		camino.append(fila["emp"])
 		camino.append(fila["aid"])
 		camino.append(fila["sid"])
-		camino.append(fila["lti"])
+		camino.append(fila["lti"].split(" ")[1])
 		camino.append(str(int(percent)))
 		tabla.append(camino)
 	#print(matriz)
