@@ -39,9 +39,9 @@
       </div>
     </header>
     <br>
-    <div class="container-fluid">
+    <div class="container-fluid" id="div-container">
       Progreso total
-      <div class="progress">
+      <div class="progress" id="progress-div">
         <div class="progress-bar progress-bar-striped progress-bar-animated" id="global-progressbar" role="progressbar" aria-valuenow="75"
           aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
       </div>
@@ -76,6 +76,7 @@
   </div>
   <!-- Javascript files-->
   <script type="text/javascript">
+    var EMPTY = false;
     var ACCIONES = {
       {% for k, v in acciones.items() %}
       "{{k}}" : "{{v}}",
@@ -96,10 +97,41 @@
         function (data) {
           $('#matriz').text(data.matriz);
           console.log(data);
-          $('#myTable-tbody tr').remove();                    
-          tableCreate(data);
+          $('#myTable-tbody tr').remove();
+          if (data.matriz.length == 0) {
+            if (!EMPTY) {
+              EMPTY = true;
+              no_paths_alert_make();
+            }
+          } else {
+            if (EMPTY) {
+              EMPTY = false;
+              no_paths_alert_destroy();
+            }
+            tableCreate(data);
+            reset_footer();
+          }
         });
     };
+    function reset_footer() {
+      document.getElementById("footer").style.position = "fixed";
+      document.getElementById("footer").style.bottom = "0";
+      document.getElementById("footer").style.left = "0";
+      document.getElementById("footer").style.right = "0";
+    }
+    function no_paths_alert_destroy() {
+      document.getElementById("no-paths-alert").remove();
+    }
+    function no_paths_alert_make() {
+      var alert = document.createElement("div");
+      alert.classList.add("alert");
+      alert.classList.add("alert-danger");
+      alert.setAttribute("role", "alert");
+      alert.setAttribute("id", "no-paths-alert");
+      alert.innerHTML = "¡No hay caminos ejecutándose para {{name}}!";
+      var currentDiv = document.getElementById("div-container"); 
+      currentDiv.insertBefore(alert, currentDiv.firstChild);
+    }
     function stopRefresh() {
       clearInterval(intervalID);
     }
@@ -140,8 +172,9 @@
       var sum = arrSum(l);
       var percent = sum / l.length;
       var bar = document.getElementById("global-progressbar");
-      bar.style = "width: " + percent.toString() + "%";
-      bar.innerHTML = percent.toString() + "%";
+      var per_as_string = Math.floor(percent).toString();
+      bar.style = "width: " + per_as_string + "%";
+      bar.innerHTML = per_as_string + "%";
     }
     function deleteTable() {
       if (confirm("It will be deleted..!!")) {

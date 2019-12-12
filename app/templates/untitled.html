@@ -42,7 +42,7 @@
             <div class="navbar-holder d-flex align-items-center justify-content-between">
               <!-- Navbar Header-->
               <div class="navbar-header">
-                <div class="brand-text brand-small" href="/clientes"><strong>ZOLBIT</strong></div></a>
+                <div class="brand-text brand-small"><a href="/clientes"><strong>ZOLBIT</strong></div></a>
               </div>
               <!-- Navbar Menu -->
               <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
@@ -68,9 +68,12 @@
           </script>
       <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
       <script>
-        $(function(){
+        function fix_footer() {
+          $(function(){
             $('#body').css('padding-bottom', $('#footer').height()+'px');   
-        });  
+          });  
+        }
+        fix_footer();
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
         function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
         e=o.createElement(i);r=o.getElementsByTagName(i)[0];
@@ -81,7 +84,7 @@
       </div>
     </div>
       <!-- Page Footer-->
-          <footer class="main-footer">
+          <footer class="main-footer" id="footer">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-sm-6">

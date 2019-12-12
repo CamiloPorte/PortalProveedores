@@ -123,7 +123,7 @@ def procesos():
 			value["emp"] = client_log_ids[value["lid"]]["emp"]
 			value["fil"] = client_log_ids[value["lid"]]["fil"]
 			data.append(value)
-	#("data: ", data)
+	print("data: ", data)
 	#Procesamiento final
 	tabla = []
 	for fila in data:
