@@ -27,7 +27,7 @@ def contar(length, text, looking_for):
             count += 1
     return count
 
-@app.route('/clientes', methods=['GET'])
+@app.route('/', methods=['GET'])
 def clientes():
 	#Conectar
 	s = tcp.connect(TCP_IP, TCP_PORT)
