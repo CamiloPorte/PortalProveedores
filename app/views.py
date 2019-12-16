@@ -4,7 +4,6 @@
 
 from app import app
 from flask import jsonify, render_template, request, redirect
-import numpy as np
 from ctypes import *
 import xml.etree.ElementTree as ET
 import app.tcputils as tcp
