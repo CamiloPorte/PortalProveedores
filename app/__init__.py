@@ -46,12 +46,6 @@ for k, v in users_data.items():
 def load_user(userid):
     return User(userid)
 
-# some protected url
-@app.route('/logged_test')
-@login_required
-def logged_test():
-    return Response("Hello World!")
-
 # somewhere to login
 
 @app.route("/login", methods=["GET", "POST"])

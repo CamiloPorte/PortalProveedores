@@ -1,5 +1,8 @@
 from users_utils import *
 import getpass
+#Path fixer
+import sys
+sys.path.insert(0, '/var/www/front_end_walker')
 
 users_data = load_users_data()
 next_id = len(users_data)
