@@ -28,7 +28,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( "#datepicker" ).datepicker();
+    $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' });
   } );
   </script>  <!-- Tweaks for older IEs-->
   <!--[if lt IE 9]>
@@ -52,7 +52,7 @@
         </div>
         <div class="card-body">
           <div class="progress" id="progress-div">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" id="global-progressbar" role="progressbar" aria-valuenow="75"
+            <div class="progress-bar progress-bar-striped" id="global-progressbar" role="progressbar" aria-valuenow="75"
               aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
           </div>
         </div>
@@ -61,7 +61,7 @@
             <div class="card">
               <div class="card-header d-flex">
                 <div class="col-md-8"><h3 id="date-label">Caminos </h3></div>
-                <div  class="col-md-4"><h3 style="float:right "> Fecha: <input type="text" id="datepicker" > </h3></div>
+                <div  class="col-md-4"><h3 style="float:right "> Fecha: <input type="text" id="datepicker" onchange="update_values()"> </h3></div>
               </div>
               <div class="card-body">
                 <table class="table table-sm" id="myTable">
@@ -70,10 +70,12 @@
                       <th style="width: 5%">ID <img role="button" height="20px" onclick="sortTable(0, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
 
                       <th style="width: 10%">Empresa <img role="button" height="20px" onclick="sortTable(1, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
-                      <th style="width: 20%">Acción <img role="button" height="20px" onclick="sortTable(2, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
-                      <th style="width: 20%">Estado <img role="button" height="20px" onclick="sortTable(3, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
-                      <th style="width: 10%">Hora <img role="button" height="20px" onclick="sortTable(4, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
-                      <th style="width: 35%; text-align: center">Progreso <img role="button" height="20px" onclick="sortTable(5, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 10%">Portal <img role="button" height="20px" onclick="sortTable(2, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 15%">Acción <img role="button" height="20px" onclick="sortTable(3, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 10%">Estado <img role="button" height="20px" onclick="sortTable(4, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 10%">Hora Inicio<img role="button" height="20px" onclick="sortTable(5, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 10%">Hora <img role="button" height="20px" onclick="sortTable(6, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 35%; text-align: center">Progreso <img role="button" height="20px" onclick="sortTable(7, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
                     </tr>
                   </thead>
                   <tbody id="myTable-tbody">
@@ -84,13 +86,16 @@
   </div>
   <!-- Javascript files-->
   <script type="text/javascript">
-    //Setear fecha
+    window.onload = function() {
+      update_values();
+    }
     var last_sort = -1;
     var last_sort_clicks = 0;
     var last_sort_integer = false;
     var today = new Date();
-    var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-    document.getElementById("date-label").innerHTML += date;
+    var date = today.getDate() + '/' + (today.getMonth()+1) + "/" + today.getFullYear();
+    var today_url_date = today.getDate().toString() + (today.getMonth()+1).toString() + today.getFullYear().toString();
+    document.getElementById("datepicker").value += date;
     var EMPTY = false;
     var ACCIONES = {
       {% for k, v in acciones.items() %}
@@ -102,12 +107,17 @@
       "{{k}}" : "{{v}}",
       {% endfor %}
     };
-    var intervalID = setInterval(update_values, 5000);
     function update_values() {
       var url_string = window.location.href
       var url = new URL(url_string);
       var cliente_id = url.searchParams.get("id");
-      var path = $SCRIPT_ROOT + '/procesos?id=' + cliente_id
+      var url_date = document.getElementById("datepicker").value.replace(/\//g, '');
+      //console.log(url_date);
+      //console.log(today_url_date);
+      if (url_date == today_url_date) {
+        intervalID = setTimeout(update_values, 5000);
+      }
+      var path = $SCRIPT_ROOT + '/{{ajaxurl}}?id=' + cliente_id + "&date="+url_date
       $.getJSON(path,
         function (data) {
           $('#matriz').text(data.matriz);
@@ -134,9 +144,9 @@
                 last_sort_clicks--;
               }
             }
-            reset_footer();
           }
         });
+        reset_footer();
     };
     function make_progressbar(percent) {
         /*<div class="progress" id="progress-div">
@@ -161,12 +171,6 @@
         div.appendChild(main_div);
         return div;
     }
-    function reset_footer() {
-      document.getElementById("footer").style.position = "fixed";
-      document.getElementById("footer").style.bottom = "0";
-      document.getElementById("footer").style.left = "0";
-      document.getElementById("footer").style.right = "0";
-    }
     function no_paths_alert_destroy() {
       document.getElementById("no-paths-alert").remove();
     }
@@ -187,14 +191,14 @@
       intervalID = setInterval(update_values, 5000);
     }
     function tableCreate(data) {
-      ACCION = 2;
-      ESTADO = 3;
-      PROGRESO = 5;
+      ACCION = 3;
+      ESTADO = 4;
+      PROGRESO = 7;
       var percents = [];
       var table = document.getElementById('myTable-tbody');      
       for (let rows = 0; rows < data.matriz.length; rows++) {
         var row = table.insertRow();
-      for (let columns = 0; columns < 6; columns++) {
+      for (let columns = 0; columns < 8; columns++) {
         var cell = row.insertCell(columns);
         cell.dataset.value = data.matriz[rows][columns];
         switch (columns) {

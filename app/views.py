@@ -72,16 +72,16 @@ def armar_xml_desde_query(ott_id, query):
 	xml_maker.finish()
 	return xml_maker
 
-@app.route('/procesos', methods=['GET'])
+@app.route('/procesos_full', methods=['GET'])
 @login_required
-def procesos():
-	cliente_id = request.args.get("id")
+def procesos_full():
+	date = request.args.get("date")
 	#Conectar
 	s = tcp.connect(TCP_IP, TCP_PORT)
 	#Get ott
 	ott_id = enviar_y_obtener_ott(s)
-	#Crear xml query: Obtener los log id y nombre empresa que corresponden un cliente
-	sql_query = "select cuelogs.log_id!01, empresas.emp_name!02, cuelogs.files!03 from cuelogs, cuentas, empresas, clientes where cuelogs.cuen_id = cuentas.cuen_id and cuentas.emp_id = empresas.emp_id and empresas.clie_id = clientes.clie_id and clientes.clie_id = %s" % (cliente_id)
+	#Crear xml query: Obtener los log id y nombre empresa que corresponden a tdos los clientes
+	sql_query = "select cuelogs.log_id!01, empresas.emp_name!02, cuelogs.files!03, portales.port_name!04, clientes.clie_name!05 from cuelogs, cuentas, empresas, clientes, portales where cuelogs.cuen_id = cuentas.cuen_id and cuentas.emp_id = empresas.emp_id and cuentas.port_id = portales.port_id and empresas.clie_id = clientes.clie_id"
 	xml_maker = armar_xml_desde_query(ott_id, sql_query)
 	xml_request = str(xml_maker)
 	#Enviar xml
@@ -95,6 +95,8 @@ def procesos():
 		k = row.find("f01").text
 		v = {"emp": row.find("f02").text, 
 			"fil": row.find("f03").text,
+			"port": row.find("f04").text,
+			"cli": row.find("f05").text,
 		}
 		client_log_ids[k] = v
 	#print("client_log_ids: ", client_log_ids)
@@ -105,7 +107,7 @@ def procesos():
 	xml_maker.open_close_tag("req", text="dblog")
 	xml_maker.open_close_tag("ott", text=str(ott_id))
 	xml_maker.open_tag("prm")
-	xml_maker.open_tag("sql", text="log.log_id=hoy")
+	xml_maker.open_tag("sql", text="log.log_id!"+date)
 	xml_maker.finish()
 	xml_request = str(xml_maker)
 	#Enviar xml
@@ -132,6 +134,90 @@ def procesos():
 		if value["lid"] in client_log_ids:
 			value["emp"] = client_log_ids[value["lid"]]["emp"]
 			value["fil"] = client_log_ids[value["lid"]]["fil"]
+			value["port"] = client_log_ids[value["lid"]]["port"]
+			value["cli"] = client_log_ids[value["lid"]]["cli"]
+			data.append(value)
+	#print("data: ", data)
+	#Procesamiento final
+	tabla = []
+	for fila in data:
+		percent = int(fila["nfi"]) * 100 / int(fila["fil"])
+		camino = []
+		camino.append(fila["lid"])
+		camino.append(fila["cli"]+":"+fila["emp"])
+		camino.append(fila["port"])
+		camino.append(fila["aid"])
+		camino.append(fila["sid"])
+		camino.append(fila["iti"].split(" ")[1])
+		camino.append(fila["lti"].split(" ")[1])
+		camino.append(str(int(percent)))
+		tabla.append(camino)
+	#print(matriz)
+	return jsonify(matriz=tabla)
+
+@app.route('/procesos', methods=['GET'])
+@login_required
+def procesos():
+	cliente_id = request.args.get("id")
+	date = request.args.get("date")
+	#Conectar
+	s = tcp.connect(TCP_IP, TCP_PORT)
+	#Get ott
+	ott_id = enviar_y_obtener_ott(s)
+	#Crear xml query: Obtener los log id y nombre empresa que corresponden un cliente
+	sql_query = "select cuelogs.log_id!01, empresas.emp_name!02, cuelogs.files!03, portales.port_name!04 from cuelogs, cuentas, empresas, clientes, portales where cuelogs.cuen_id = cuentas.cuen_id and cuentas.emp_id = empresas.emp_id and cuentas.port_id = portales.port_id and empresas.clie_id = clientes.clie_id and clientes.clie_id = %s" % (cliente_id)
+	xml_maker = armar_xml_desde_query(ott_id, sql_query)
+	xml_request = str(xml_maker)
+	#Enviar xml
+	tcp.send(s, xml_request)
+	xml_received = tcp.receive(s)
+	#print(xml_received)
+	#Procesar log id y emp name
+	client_log_ids = {}
+	row_list = ET.fromstring(xml_received).find("info").find("dat").findall("row")
+	for row in row_list:
+		k = row.find("f01").text
+		v = {"emp": row.find("f02").text, 
+			"fil": row.find("f03").text,
+			"port": row.find("f04").text,
+		}
+		client_log_ids[k] = v
+	#print("client_log_ids: ", client_log_ids)
+	#Crear xml query: dblog
+	ott_id = enviar_y_obtener_ott(s)
+	xml_maker = XMLMaker()
+	xml_maker.open_tag("tx", properties={"id": "borja"})
+	xml_maker.open_close_tag("req", text="dblog")
+	xml_maker.open_close_tag("ott", text=str(ott_id))
+	xml_maker.open_tag("prm")
+	xml_maker.open_tag("sql", text="log.log_id!"+date)
+	xml_maker.finish()
+	xml_request = str(xml_maker)
+	#Enviar xml
+	tcp.send(s, xml_request)
+	xml_received = tcp.receive(s)
+	#print(xml_received)
+	#Procesar xml
+	check_data = []
+	row_list = get_rowlist(xml_received)
+	for row in row_list:
+		ncu = row.find("ncu").text
+		iti = row.find("iti").text
+		lid = row.find("lid").text
+		aid = row.find("aid").text
+		sid = row.find("sid").text
+		nfi = row.find("nfi").text
+		img = row.find("img").text
+		lti = row.find("lti").text
+		check_data.append({"ncu": ncu, "iti": iti, "lid": lid, "aid": aid, "sid": sid, "nfi": nfi, "img": img, "lti": lti})
+	#print("check_data: ", check_data)
+	#Filtrado
+	data = []
+	for value in check_data:
+		if value["lid"] in client_log_ids:
+			value["emp"] = client_log_ids[value["lid"]]["emp"]
+			value["fil"] = client_log_ids[value["lid"]]["fil"]
+			value["port"] = client_log_ids[value["lid"]]["port"]
 			data.append(value)
 	#print("data: ", data)
 	#Procesamiento final
@@ -141,21 +227,17 @@ def procesos():
 		camino = []
 		camino.append(fila["lid"])
 		camino.append(fila["emp"])
+		camino.append(fila["port"])
 		camino.append(fila["aid"])
 		camino.append(fila["sid"])
+		camino.append(fila["iti"].split(" ")[1])
 		camino.append(fila["lti"].split(" ")[1])
 		camino.append(str(int(percent)))
 		tabla.append(camino)
 	#print(matriz)
 	return jsonify(matriz=tabla)
 
-
-@app.route('/camino', methods=["GET"])
-@login_required
-def camino():
-	cliente_name = request.args.get("name")
-	cliente_id = request.args.get("id")
-	#Conectar
+def camino_common(name="", ajaxurl="procesos"):
 	s = tcp.connect(TCP_IP, TCP_PORT)
 	ott_id = enviar_y_obtener_ott(s)
 	xml_maker = armar_xml_desde_query(ott_id, "select acc_id!01, acc_desc!02 from acciones")
@@ -175,7 +257,20 @@ def camino():
 	for row in rowlist:
 		status[row.find("f01").text] = row.find("f02").text
 	#print(acciones, status)
-	return render_template("tables.html", name=cliente_name, acciones=acciones, status=status)
+	return render_template("tables.html", name=name, acciones=acciones, status=status, ajaxurl=ajaxurl)
+
+@app.route('/camino', methods=["GET"])
+@login_required
+def camino():
+	cliente_name = request.args.get("name")
+	cliente_id = request.args.get("id")
+	#Conectar
+	return camino_common(name=cliente_name, ajaxurl="procesos")
+
+@app.route('/camino_full', methods=["GET"])
+@login_required
+def camino_full():
+	return camino_common(name="Todos los caminos", ajaxurl="procesos_full")
 
 def get_rowlist(xml_string):
 	return ET.fromstring(xml_string).find("info").find("dat").findall("row")

@@ -36,7 +36,7 @@ users_data = load_users_data()
 users = []
 i = 0
 for k, v in users_data.items():
-	u = User(i)
+	u = User(k)
 	u.set_name(k)
 	u.set_password(v)
 	users.append(u)
@@ -56,7 +56,7 @@ def login():
         password = request.form['password']        
         if username in users_data:
             if users_data[username]["password"] == md5ify(password):
-                id = users_data[username]["id"]
+                id = username
                 user = User(id)
                 login_user(user)
                 nxt = "clientes"
@@ -72,11 +72,11 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return Response('<p>Logged out</p>')
+    return redirect("/login?message_code=success_logout")
 
 # handle login failed
 @app.errorhandler(401)
 def page_not_found(e):
-    return Response('<p>Login failed</p>')
+    return redirect("/login?message_code=login_failed")
 
 from app import views
