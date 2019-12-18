@@ -3,14 +3,19 @@
 # Archivo ejemplo.py
 
 from app import app
-from flask import jsonify, render_template, request, redirect
+from flask import jsonify, render_template, request, redirect, Response, url_for, session, abort
+from flask_login import LoginManager, login_required, login_user, logout_user 
 from ctypes import *
 import xml.etree.ElementTree as ET
 import app.tcputils as tcp
 from app.xmlutils import XMLMaker
 
+# ===== MAIN CONFIGURATION =======
+
 TCP_IP = "45.79.37.223"
 TCP_PORT = 25000
+
+# ===== HELPER FUNCTIONS =======
 
 def get_ott(xmlstring):
     return ET.fromstring(xmlstring).find("ott").text
@@ -27,7 +32,10 @@ def contar(length, text, looking_for):
             count += 1
     return count
 
-@app.route('/', methods=['GET'])
+# ===== MAIN FUNCTIONALITY =======
+
+@app.route('/clientes', methods=['GET'])
+@login_required
 def clientes():
 	#Conectar
 	s = tcp.connect(TCP_IP, TCP_PORT)
@@ -65,6 +73,7 @@ def armar_xml_desde_query(ott_id, query):
 	return xml_maker
 
 @app.route('/procesos', methods=['GET'])
+@login_required
 def procesos():
 	cliente_id = request.args.get("id")
 	#Conectar
@@ -140,6 +149,7 @@ def procesos():
 
 
 @app.route('/camino', methods=["GET"])
+@login_required
 def camino():
 	cliente_name = request.args.get("name")
 	cliente_id = request.args.get("id")

@@ -22,3 +22,6 @@ htmlcov/
 .coverage.*
 *,cover
 Front-End-Walker.code-workspace
+
+#custom
+users.json
