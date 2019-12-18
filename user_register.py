@@ -1,8 +1,7 @@
 from users_utils import *
 import getpass
-#Path fixer
-import sys
-sys.path.insert(0, '/var/www/front_end_walker')
+import os
+here = os.path.dirname(__file__)
 
 users_data = load_users_data()
 next_id = len(users_data)
@@ -17,7 +16,7 @@ while True:
 		print("Las contraseñas no coinciden.") 
 		continue
 	users_data[uname] = {"id": next_id, "password": md5ify(pswd)}
-	f = open("users.json", "w")
+	f = open(here + "users.json", "w")
 	f.write(json.dumps(users_data))
 	f.close()
 	print("Usuario creado correctamente.")
