@@ -42,7 +42,7 @@ def clientes():
 	#Get ott
 	ott_id = enviar_y_obtener_ott(s)
 	#Crear xml query
-	sql_query = "select clie_name!01, clie_id!02 from CLIENTES"
+	sql_query = "select clie_name!01, clie_id!02 from CLIENTES order by clie_name"
 	xml_maker = armar_xml_desde_query(ott_id, sql_query)
 	xml_request = str(xml_maker)
 	#Enviar xml
@@ -52,7 +52,7 @@ def clientes():
 	data = []
 	for row in row_list:
 		data.append({"name": row.find("f01").text, "id": row.find("f02").text})
-	print(data)
+	#print(data)
 	return render_template("clientes.html", data=data)
 
 def enviar_y_obtener_ott(socket):
