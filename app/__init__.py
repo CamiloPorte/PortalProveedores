@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, Response, url_for, session, abort
+from flask import Flask, request, redirect, Response, url_for, session, abort, render_template
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 import json
 import hashlib
@@ -65,13 +65,7 @@ def login():
                 return redirect(nxt)
         return abort(401)
     else:
-        return Response('''
-        <form action="" method="post">
-            <p><input type=text name=username>
-            <p><input type=password name=password>
-            <p><input type=submit value=Login>
-        </form>
-        ''')
+        return render_template("login.html")
 
 # somewhere to logout
 @app.route("/logout")
