@@ -1,4 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Archivo ejemplo.py
 class XMLMaker:
+
 	def __init__(self):
 		self.tag_stack = []
 		self.string = ""
