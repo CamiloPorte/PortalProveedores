@@ -49,6 +49,7 @@ def load_user(userid):
 # somewhere to login
 
 @app.route("/login", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -58,7 +59,10 @@ def login():
                 id = users_data[username]["id"]
                 user = User(id)
                 login_user(user)
-                return redirect(request.args.get("next"))
+                nxt = "clientes"
+                if request.args.get("next") != None:
+                	nxt = request.args.get("next")
+                return redirect(nxt)
         return abort(401)
     else:
         return Response('''
