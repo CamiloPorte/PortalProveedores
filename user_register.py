@@ -16,7 +16,7 @@ while True:
 		print("Las contraseñas no coinciden.") 
 		continue
 	users_data[uname] = {"id": next_id, "password": md5ify(pswd)}
-	f = open(here + "users.json", "w")
+	f = open(here + "/users.json", "w")
 	f.write(json.dumps(users_data))
 	f.close()
 	print("Usuario creado correctamente.")
