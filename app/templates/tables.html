@@ -15,7 +15,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
   <!-- theme stylesheet-->
   <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.default.css') }}" id="theme-stylesheet">
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <!-- Custom stylesheet - for your changes-->
   <link rel="stylesheet" href="{{ url_for('static', filename = 'css/custom.css') }}">
   <!-- Favicon-->
@@ -25,11 +24,73 @@
   <script src="https://use.fontawesome.com/99347ac47f.js"></script>
   <!-- Font Icons CSS-->
   <link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
-<script>  
-  $( function() {
-    $( "#datepicker" ).datepicker();
-  } );
-</script>
+  <!-- Tweaks for older IEs-->
+  <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+
+<body >
+  <div class="page charts-page">
+    <!-- Page Header-->
+    <header class="page-header">
+      <div class="container-fluid">
+        <h2 class="no-margin-bottom">Por favor seleccione un cliente:</h2>
+      </div>
+    </header>
+    <br>
+    <!-- Breadcrumb-->
+    <div class="container-fluid">
+      <div class="list-group">
+        {% for cliente in data %}
+        <a href="/camino?id={{cliente.id}}&name={{cliente.name}}" class="list-group-item list-group-item-action">{{cliente.name}}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
+  <!---->
+  <script>
+    (function (b, o, i, l, e, r) {
+    b.GoogleAnalyticsObject = l; b[l] || (b[l] =
+      function () { (b[l].q = b[l].q || []).push(arguments) }); b[l].l = +new Date;
+      e = o.createElement(i); r = o.getElementsByTagName(i)[0];
+      e.src = '//www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e, r)
+    }(window, document, 'script', 'ga'));
+    ga('create', 'UA-XXXXX-X'); ga('send', 'pageview');
+
+  </script>
+</body>
+
+</html>
+{% endblock %}[root@control templates]# cat tables.html
+{% extends "untitled.html" %}
+{% block body %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Caminos</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <!-- Bootstrap CSS-->
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}">
+  <!-- Google fonts - Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+  <!-- theme stylesheet-->
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/style.default.css') }}" id="theme-stylesheet">
+  <!-- Custom stylesheet - for your changes-->
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'css/custom.css') }}">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="{{ url_for('static', filename = 'img/favicon.ico') }}">
+  <!-- Font Awesome CDN-->
+  <!-- you can replace it by local Font Awesome-->
+  <script src="https://use.fontawesome.com/99347ac47f.js"></script>
+  <!-- Font Icons CSS-->
+  <link rel="stylesheet" href="https://file.myfontastic.com/da58YPMQ7U5HY8Rb6UxkNf/icons.css">
   <!-- Tweaks for older IEs-->
   <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -58,20 +119,22 @@
         </div>
       </div>
     <!-- Breadcrumb-->
+          {%for j in range(((matriz|length)/8)|int +1 )%}
             <div class="card">
               <div class="card-header d-flex align-items-center">
                 <h3 class="h4" id="date-label">Caminos a la fecha de </h3>
               </div>
               <div class="card-body">
-                <table class="table table-bordered table-striped table-sm" id="myTable">
-                  <thead class="thead-dark">
+                <table class="table table-sm" id="myTable">
+                  <thead>
                     <tr>
-                      <th style="width: 5%">ID</th>
-                      <th style="width: 10%">Empresa</th>
-                      <th style="width: 20%">Acción</th>
-                      <th style="width: 20%">Estado</th>
-                      <th style="width: 10%">Hora</th>
-                      <th style="width: 35%; text-align: center">Progreso</th>
+                      <th style="width: 5%">ID <img role="button" height="20px" onclick="sortTable(0, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+
+                      <th style="width: 10%">Empresa <img role="button" height="20px" onclick="sortTable(1, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 20%">Acción <img role="button" height="20px" onclick="sortTable(2, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 20%">Estado <img role="button" height="20px" onclick="sortTable(3, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 10%">Hora <img role="button" height="20px" onclick="sortTable(4, false)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
+                      <th style="width: 35%; text-align: center">Progreso <img role="button" height="20px" onclick="sortTable(5, true)" src="{{ url_for('static', filename = 'img/sort-icon.png') }}"></th>
                     </tr>
                   </thead>
                   <tbody id="myTable-tbody">
@@ -79,10 +142,14 @@
                 </table>
               </div>
             </div>
+          {%endfor%}
   </div>
   <!-- Javascript files-->
   <script type="text/javascript">
     //Setear fecha
+    var last_sort = -1;
+    var last_sort_clicks = 0;
+    var last_sort_integer = false;
     var today = new Date();
     var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
     document.getElementById("date-label").innerHTML += date;
@@ -119,6 +186,16 @@
               no_paths_alert_destroy();
             }
             tableCreate(data);
+            if (last_sort != -1) {
+              if (last_sort_clicks < 3)
+                var k = last_sort_clicks;
+              else
+                var k = ((last_sort_clicks - 1) % 2) + 1;
+              for (var i = 0; i != k; i++) {
+                sortTable(last_sort, last_sort_integer);
+                last_sort_clicks--;
+              }
+            }
             reset_footer();
           }
         });
@@ -181,6 +258,7 @@
         var row = table.insertRow();
       for (let columns = 0; columns < 6; columns++) {
         var cell = row.insertCell(columns);
+        cell.dataset.value = data.matriz[rows][columns];
         switch (columns) {
           case ACCION:
             cell.innerHTML = ACCIONES[data.matriz[rows][columns]];
@@ -214,7 +292,74 @@
       if (confirm("It will be deleted..!!")) {
         document.getElementById("myTable").deleteRow();
       }
-    }          
+    }
+    function sortTable(n, integer) {
+      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+      table = document.getElementById("myTable");
+      switching = true;
+      // Set the sorting direction to ascending:
+      dir = "asc";
+      /* Make a loop that will continue until
+      no switching has been done: */
+      while (switching) {
+        // Start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /* Loop through all table rows (except the
+        first, which contains table headers): */
+        for (i = 1; i < (rows.length - 1); i++) {
+          // Start by saying there should be no switching:
+          shouldSwitch = false;
+          /* Get the two elements you want to compare,
+          one from current row and one from the next: */
+          x = rows[i].getElementsByTagName("TD")[n];
+          y = rows[i + 1].getElementsByTagName("TD")[n];
+          /* Check if the two rows should switch place,
+          based on the direction, asc or desc: */
+          if (integer) {
+            var comp1 = parseInt(x.dataset.value, 10);
+            var comp2 = parseInt(y.dataset.value, 10);
+          } else {
+            var comp1 = x.dataset.value.toLowerCase();
+            var comp2 = y.dataset.value.toLowerCase();
+          }
+          if (dir == "asc") {
+            if (comp1 > comp2) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          } else if (dir == "desc") {
+            if (comp1 < comp2) {
+              // If so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          /* If a switch has been marked, make the switch
+          and mark that a switch has been done: */
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          // Each time a switch is done, increase this count by 1:
+          switchcount ++;
+        } else {
+          /* If no switching has been done AND the direction is "asc",
+          set the direction to "desc" and run the while loop again. */
+          if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+          }
+        }
+      }
+      if (last_sort != n)
+        last_sort_clicks = 0; //Reset clicks si se clickea otro
+      last_sort_clicks ++;
+      last_sort = n;
+      last_sort_integer = integer;
+      //alert(last_sort.toString() + last_sort_integer.toString() + last_sort_clicks.toString());
+    }
   </script>
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.-->
   <!---->
@@ -232,4 +377,3 @@
 </body>
 
 </html>
-{% endblock %}

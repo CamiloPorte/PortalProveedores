@@ -111,18 +111,20 @@ def procesos():
 	#Enviar xml
 	tcp.send(s, xml_request)
 	xml_received = tcp.receive(s)
+	#print(xml_received)
 	#Procesar xml
 	check_data = []
 	row_list = get_rowlist(xml_received)
 	for row in row_list:
 		ncu = row.find("ncu").text
+		iti = row.find("iti").text
 		lid = row.find("lid").text
 		aid = row.find("aid").text
 		sid = row.find("sid").text
 		nfi = row.find("nfi").text
 		img = row.find("img").text
 		lti = row.find("lti").text
-		check_data.append({"ncu": ncu, "lid": lid, "aid": aid, "sid": sid, "nfi": nfi, "img": img, "lti": lti})
+		check_data.append({"ncu": ncu, "iti": iti, "lid": lid, "aid": aid, "sid": sid, "nfi": nfi, "img": img, "lti": lti})
 	#print("check_data: ", check_data)
 	#Filtrado
 	data = []
