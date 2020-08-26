@@ -6,5 +6,5 @@ from forms import *
 from flask import render_template,request,redirect, make_response, session, escape, url_for, flash
 
 @app.route('/', methods=["POST", "GET"])
-def ingreso():
-	pass
+def inicio():
+	return render_template("login.html")
