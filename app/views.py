@@ -8,3 +8,7 @@ from flask import render_template,request,redirect, make_response, session, esca
 @app.route('/', methods=["POST", "GET"])
 def inicio():
 	return render_template("login.html")
+
+@app.route('/index', methods=["POST", "GET"])
+def index():
+	return render_template("index.html")
