@@ -5,6 +5,24 @@ from app import app
 from forms import *
 from flask import render_template,request,redirect, make_response, session, escape, url_for, flash
 
+
+###############################################################
+#															  #
+#						VISTAS ADMIN						  #
+#															  #
+###############################################################
+
 @app.route('/', methods=["POST", "GET"])
 def inicio():
 	return render_template("login.html")
+
+@app.route('/signup', methods=["POST", "GET"])
+def signup():
+	return render_template("register.html")
+
+
+###############################################################
+#															  #
+#						VISTAS VENDERDOR	     			  #
+#															  #
+###############################################################
