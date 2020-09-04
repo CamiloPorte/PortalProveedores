@@ -5,6 +5,7 @@ from app import app
 from forms import *
 from flask import render_template,request,redirect, make_response, session, escape, url_for, flash
 from werkzeug.utils import secure_filename
+from openpyxl import load_workbook
 
 
 ###############################################################
@@ -28,10 +29,25 @@ def formulario():
 @app.route('/upload', methods = ["POST", "GET"])
 def uploadsd():
 	if request.method == "POST":
+		if 'file' not in request.files:
+			return render_template("index2.html", message = "File not selected")
+
 		file = request.files["file"]
+		filename = file.filename
+		if filename == '':
+			return render_template("index2.html", message = "Seleccione un archivo")
+
 		file.save(os.path.join("uploads", file.filename))
-		return render_template("index2.html", message = "success")
-	return render_template("index2.html", message = "Upload")
+
+		excel_document = load_workbook(os.path.join("uploads", file.filename), data_only=True)
+		filetype= type(excel_document)
+		return render_template("index2.html", message =  filetype )
+	else:
+		return render_template("index2.html", message = "Upload")
+
+
+
+
 
 
 
