@@ -6,7 +6,7 @@ from forms import *
 from flask import render_template,request,redirect, make_response, session, escape, url_for, flash
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
-
+import openpyxl_dictreader
 
 ###############################################################
 #															  #
@@ -28,6 +28,7 @@ def formulario():
 
 @app.route('/upload', methods = ["POST", "GET"])
 def uploadsd():
+
 	if request.method == "POST":
 		if 'file' not in request.files:
 			return render_template("index2.html", message = "File not selected")
@@ -41,7 +42,14 @@ def uploadsd():
 
 		excel_document = load_workbook(os.path.join("uploads", file.filename), data_only=True)
 		filetype= type(excel_document)
-		return render_template("index2.html", message =  filetype )
+		sheet = excel_document.get_sheet_by_name('Hoja1')
+		resultados=[]
+		reader = openpyxl_dictreader.DictReader(os.path.join("uploads", file.filename),'Hoja1')
+
+		for row in reader :
+			resultados.append(dict(row))
+
+		return render_template("index2.html", resultados=resultados)
 	else:
 		return render_template("index2.html", message = "Upload")
 
