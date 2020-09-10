@@ -18,6 +18,10 @@ import openpyxl_dictreader
 def inicio():
 	return render_template("login.html")
 
+@app.route('/index', methods=["POST", "GET"])
+def index():
+	return render_template("vista_admin.html")	
+
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
 	return render_template("register.html")
@@ -71,3 +75,6 @@ def uploadsd():
 #						VISTAS VENDERDOR	     			  #
 #															  #
 ###############################################################
+@app.route('/index_venta', methods=["POST", "GET"])
+def index2():
+	return render_template("vista_vendedor.html")	
