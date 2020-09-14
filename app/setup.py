@@ -10,49 +10,73 @@ sql ="""DROP SCHEMA public CASCADE;
  CREATE SCHEMA public;"""
 cur.execute(sql)
 
-#sql="""
-#CREATE TABLE atributos_usuario
-#  (id serial PRIMARY KEY,
-#   atributo varchar(255)
-#   );
-#"""
-#cur.execute(sql)
+sql="""
+CREATE TABLE tipos
+  (id serial PRIMARY KEY,
+  nombre varchar(255)
+   );
+"""
+cur.execute(sql)
+
+sql="""
+CREATE TABLE proveedores
+  (id serial PRIMARY KEY,
+  nombre varchar(50),
+  descripcion varchar(255)
+   );
+"""
+cur.execute(sql)
+
+sql="""
+CREATE TABLE productos
+  (codigo varchar(20) PRIMARY KEY,
+  descripcion varchar(255)
+   );
+"""
+cur.execute(sql)
+
+sql="""
+CREATE TABLE usuario
+  (id serial PRIMARY KEY,
+   id_tipo int,
+   correo varchar(100),
+   contrasena varchar(255),
+   nombre varchar(50),
+   apellido1 varchar(50),
+   apellido2 varchar(50),
+   FOREIGN KEY (id_tipo) REFERENCES tipos(id)
+  );
+"""
+cur.execute(sql)
 
 
-#sql="""
-#CREATE TABLE tipo_usuario
-#  (id serial PRIMARY KEY,
-#   tipo varchar(255)
-#  );
-#"""
-#cur.execute(sql)
+sql="""
+CREATE TABLE pedido
+ (id serial PRIMARY KEY ,
+ id_usu integer,
+ id_prov integer,
+ n_orden integer,
+ descripcion varchar(255),
+ fecha_arribo date,
+ FOREIGN KEY (id_usu) REFERENCES usuario (id),
+ FOREIGN KEY (id_prov) REFERENCES proveedores(id) 
+);
+"""
+cur.execute(sql)
+
+sql="""
+CREATE TABLE prod_pedido
+ (id_ped integer,
+ codigo varchar(20),
+ cant integer,
+ PRIMARY KEY (id_ped, codigo, cant),
+ FOREIGN KEY (id_ped) REFERENCES usuario (id),
+ FOREIGN KEY (codigo) REFERENCES productos (codigo)
+);
+"""
 
 
 
-#sql="""
-#CREATE TABLE usuarios
-# (id serial PRIMARY KEY,
-#  tipo integer,
-#  email varchar(50),
-#  password varchar (255),
-#  rut varchar(11),
-#  fecha_creacion date,
-#  FOREIGN KEY (tipo) REFERENCES tipo_usuario(id)
-# );
-#"""
-#cur.execute(sql)
-
-
-#sql="""
-#CREATE TABLE relacion_usu_atri
-# (id_usu integer,
-# id_atri integer,
-# valor varchar(255),
-# PRIMARY KEY (id_usu, id_atri, valor),
-# FOREIGN KEY (id_usu) REFERENCES usuarios (id),
-# FOREIGN KEY (id_atri) REFERENCES atributos_usuario(id) 
-#);
-#"""
 cur.execute(sql)
 conn.commit()
 cur.close()
