@@ -1,0 +1,47 @@
+{% extends "vista_admin.html" %}
+
+{% block content %}
+<h5 class="mt-4">Pedidos en camino</h5>
+
+
+
+
+<!--buscador-->
+
+
+    <div class="container">
+        <form class="form-inline">
+            <div class="form-group">
+                
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="codigo"/>
+                </div>
+              
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="nombre"/>
+                </div>
+    
+    
+            </div>
+    
+    
+                <button type="submit" class="btn btn-success btn-lg">Buscar productos</button>
+        </form>
+    
+    </div>
+
+
+<hr> <!--separador buscador y resultados-->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Primary Card</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}

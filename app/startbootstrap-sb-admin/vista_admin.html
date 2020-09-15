@@ -43,7 +43,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Crear usuario
                             </a>
-                            <a class="nav-link" href="index">
+                            <a class="nav-link" href="upload">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Ingresar pedido
                             </a>
@@ -51,6 +51,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Ingresar proveedor
                             </a>
+                            <a class="nav-link" href="pedido">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                ver pedido
+                            </a>                            
 
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
@@ -88,10 +92,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
+                        
+                    {%block content%}
+                    {%endblock%}
   
-
-
-
 
                     
                     </div>

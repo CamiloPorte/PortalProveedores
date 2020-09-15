@@ -18,9 +18,20 @@ import openpyxl_dictreader
 def inicio():
 	return render_template("login.html")
 
+#vista principal admin
 @app.route('/index', methods=["POST", "GET"])
 def index():
-	return render_template("vista_admin.html")	
+	return render_template("vista_admin.html")
+
+#ver pedido
+@app.route('/pedido', methods=["POST", "GET"])
+def pedido():
+	return render_template("pedido.html")
+
+
+@app.route('/detalle', methods=["POST", "GET"])
+def detalle():
+	return render_template("detalle.html")	
 
 @app.route('/signup', methods=["POST", "GET"])
 def signup():
@@ -28,19 +39,19 @@ def signup():
 
 @app.route('/formulario', methods = ["POST", "GET"])
 def formulario():
-	return render_template("index2.html")
+	return render_template("upload.html")
 
 @app.route('/upload', methods = ["POST", "GET"])
 def uploadsd():
 
 	if request.method == "POST":
 		if 'file' not in request.files:
-			return render_template("index2.html", message = "File not selected")
+			return render_template("upload.html", message = "File not selected")
 
 		file = request.files["file"]
 		filename = file.filename
 		if filename == '':
-			return render_template("index2.html", message = "Seleccione un archivo")
+			return render_template("upload.html", message = "Seleccione un archivo")
 
 		file.save(os.path.join("uploads", file.filename))
 
@@ -53,9 +64,9 @@ def uploadsd():
 		for row in reader :
 			resultados.append(dict(row))
 
-		return render_template("index2.html", resultados=resultados)
+		return render_template("upload.html", resultados=resultados)
 	else:
-		return render_template("index2.html", message = "Upload")
+		return render_template("upload.html", message = "Upload")
 
 
 
@@ -72,9 +83,11 @@ def uploadsd():
 
 ###############################################################
 #															  #
-#						VISTAS VENDERDOR	     			  #
+#						VISTAS VENDEDOR	     			      #
 #															  #
 ###############################################################
+
+#unica vista de un vendedor
 @app.route('/index_venta', methods=["POST", "GET"])
 def index2():
 	return render_template("vista_vendedor.html")	
