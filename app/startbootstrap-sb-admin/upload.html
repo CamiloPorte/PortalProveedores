@@ -1,22 +1,21 @@
 {% extends "vista_admin.html" %}
+<title>{% block title %}ingreso pedidos{% endblock %}</title>
 
 {% block content %}
                     <div class="container-fluid">
                         <h1 class="mt-4">Formulario para agregar pedidos</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Pedidos</li>
-                        </ol>
+
                         <form method="POST" action="/upload" enctype="multipart/form-data">
                           <p><input type="file" name="file"></p>
                           <p><input type="submit" value="Submit"></p>
                         </form>
                         <p>
                           {{message}}
-                          {{resultados[0]}}
+                          {{resultados}}
 
 
                         </p>
-                        <table class="table">
+                        <table class="table table-hover table-bordered">
                           <thead>
                             <!--<tr>
                               {% for header in resultados %}

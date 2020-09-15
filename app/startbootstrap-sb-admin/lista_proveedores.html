@@ -1,0 +1,44 @@
+{% extends "vista_admin.html" %}
+<title>{% block title %}lista proveedores{% endblock %}</title>
+{% block content %}
+
+<h3 style="text-align: center">Proveedores</h3>
+<form class="form-horizontal" action="/action_page.php">
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>nombre</th>
+        <th>descripcion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>china SA</td>
+        <td>pesas</td>
+      </tr>
+      <tr>
+        <td>taiwan LTDA</td>
+        <td>corredoras</td>
+      </tr>
+      <tr>
+        <td>singapur EIRL </td>
+        <td>cositas del coso</td>
+      </tr>
+    </tbody>
+  </table>
+
+    <div class="btn-toolbar">
+        <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-success btn-lg">Añadir proveedor</button>
+
+        <button type="button" class="btn btn-danger btn-lg" onclick="history.back();" value="Back">Eliminar proveedor</button>
+
+      </div>
+    </div>
+
+
+
+  </form> 
+
+{%endblock%}

@@ -18,24 +18,34 @@ import openpyxl_dictreader
 def inicio():
 	return render_template("login.html")
 
+
+
 #vista principal admin
 @app.route('/index', methods=["POST", "GET"])
 def index():
 	return render_template("vista_admin.html")
 
-#ver pedido
+
+@app.route('/crear_usuario', methods=["POST", "GET"])
+def crear_usuario():
+	return render_template("register.html")
+
 @app.route('/pedido', methods=["POST", "GET"])
 def pedido():
 	return render_template("pedido.html")
-
 
 @app.route('/detalle', methods=["POST", "GET"])
 def detalle():
 	return render_template("detalle.html")	
 
-@app.route('/signup', methods=["POST", "GET"])
-def signup():
-	return render_template("register.html")
+@app.route('/proveedor', methods=["POST", "GET"])
+def proveedor():
+	return render_template("proveedor.html")	
+
+@app.route('/lista_proveedores', methods=["POST", "GET"])
+def listaproveedor():
+	return render_template("lista_proveedores.html")	
+
 
 @app.route('/formulario', methods = ["POST", "GET"])
 def formulario():

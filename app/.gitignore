@@ -1,0 +1,9 @@
+env/
+*.pyc
+__pycache__/
+*.DS_Store
+<<<<<<< HEAD
+*Zone.Identifier
+=======
+*Zone.Identifier
+>>>>>>> d86b3e84acb413858940525b8d4da5bd45ad956a

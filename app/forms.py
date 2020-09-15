@@ -66,4 +66,6 @@ class crearProveedor(FlaskForm):
     nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
     descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
 
-
+class crearProveedores(FlaskForm):
+    nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
+    descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
