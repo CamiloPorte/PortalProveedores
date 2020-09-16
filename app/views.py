@@ -59,8 +59,11 @@ def upload_file():
 		f = request.files['file']
 		data_xls = pd.read_excel(f)
 		arr=data_xls.to_numpy()
+		filas, columnas= arr.shape
 		print("======================")
-		print("codigo: ",arr[0][0],"|","descripcion: ",arr[0][1],"|","cantidad: ",arr[0][2])
+		print("filas columnas:", filas, columnas)
+		for i in range(filas):
+			print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
 		print("======================")
 
 		return data_xls.to_html()
