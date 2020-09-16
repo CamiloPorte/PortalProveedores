@@ -7,6 +7,7 @@ from flask import render_template,request,redirect, make_response, session, esca
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
 import openpyxl_dictreader
+import pandas as pd
 
 ###############################################################
 #															  #
@@ -50,6 +51,29 @@ def listaproveedor():
 @app.route('/formulario', methods = ["POST", "GET"])
 def formulario():
 	return render_template("upload.html")
+
+@app.route("/upload2", methods=['GET', 'POST'])
+def upload_file():
+	if request.method == 'POST':
+		print(request.files['file'])
+		f = request.files['file']
+		data_xls = pd.read_excel(f)
+		arr=data_xls.to_numpy()
+		print("======================")
+		print("codigo: ",arr[0][0],"|","descripcion: ",arr[0][1],"|","cantidad: ",arr[0][2])
+		print("======================")
+
+		return data_xls.to_html()
+	return
+	'''
+	<!doctype html>
+	<title>Upload an excel file</title>
+	<h1>Excel file upload (XLS only)</h1>
+	<form action="" method=post enctype=multipart/form-data>
+	<p><input type=file name=file><input type=submit value=Upload>
+	</form>
+	'''
+
 
 @app.route('/upload', methods = ["POST", "GET"])
 def uploadsd():
