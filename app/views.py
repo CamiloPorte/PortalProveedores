@@ -53,7 +53,7 @@ def formulario():
 	return render_template("upload.html")
 
 @app.route("/upload2", methods=['GET', 'POST'])
-def upload_file():
+def upload2():
 	if request.method == 'POST':
 		print(request.files['file'])
 		f = request.files['file']
@@ -66,20 +66,12 @@ def upload_file():
 			print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
 		print("======================")
 
-		return data_xls.to_html()
-	return
-	'''
-	<!doctype html>
-	<title>Upload an excel file</title>
-	<h1>Excel file upload (XLS only)</h1>
-	<form action="" method=post enctype=multipart/form-data>
-	<p><input type=file name=file><input type=submit value=Upload>
-	</form>
-	'''
-
+		#return data_xls.to_html()
+		return render_template("upload2.html",data=arr,cant=filas )
+	return render_template("upload2.html")
 
 @app.route('/upload', methods = ["POST", "GET"])
-def uploadsd():
+def upload():
 
 	if request.method == "POST":
 		if 'file' not in request.files:
