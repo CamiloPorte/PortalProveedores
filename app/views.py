@@ -52,24 +52,29 @@ def listaproveedor():
 def formulario():
 	return render_template("upload.html")
 
-@app.route("/upload2", methods=['GET', 'POST'])
-def upload2():
+@app.route("/upload", methods=['GET', 'POST'])
+def upload():
 	if request.method == 'POST':
-		print(request.files['file'])
 		f = request.files['file']
+		filename = f.filename
+		if filename == '':
+			return render_template("upload2.html",aux=0, message="porfavor seleccione un archivo")
 		data_xls = pd.read_excel(f)
 		arr=data_xls.to_numpy()
 		filas, columnas= arr.shape
-		print("======================")
-		print("filas columnas:", filas, columnas)
-		for i in range(filas):
-			print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
-		print("======================")
+
+		#print("======================")
+		#print("filas columnas:", filas, columnas)
+		#for i in range(filas):
+		#	print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
+		#print("======================")
 
 		#return data_xls.to_html()
-		return render_template("upload2.html",data=arr,cant=filas )
-	return render_template("upload2.html")
+		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="" )
+	return render_template("upload2.html",aux=0,message="")
 
+
+'''
 @app.route('/upload', methods = ["POST", "GET"])
 def upload():
 
@@ -97,7 +102,7 @@ def upload():
 	else:
 		return render_template("upload.html", message = "Upload")
 
-
+'''
 
 
 
