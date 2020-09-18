@@ -58,7 +58,7 @@ def upload():
 		f = request.files['file']
 		filename = f.filename
 		if filename == '':
-			return render_template("upload2.html",aux=0, message="porfavor seleccione un archivo")
+			return render_template("upload2.html",aux=0, message="Porfavor seleccione un archivo excel")
 		data_xls = pd.read_excel(f)
 		arr=data_xls.to_numpy()
 		filas, columnas= arr.shape
@@ -70,8 +70,8 @@ def upload():
 		#print("======================")
 
 		#return data_xls.to_html()
-		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="" )
-	return render_template("upload2.html",aux=0,message="")
+		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente" )
+	return render_template("upload2.html",aux=0,message="Porfavor seleccione un archivo excel")
 
 
 '''

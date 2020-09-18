@@ -6,9 +6,39 @@
 
                         <h1 class="mt-4">Formulario para agregar pedidos</h1>
 
-                        <form action="" method="POST" enctype=multipart/form-data>
-                          <p><input type=file name=file><input type=submit value="subir excel">
+                        <form class="form-horizontal" action="" method="POST" enctype=multipart/form-data>
+                            <div class="aParent">
+                              <label for="proveedor">Proveedor</label>
+                              <select class="form-control" id="proveedor">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                            </div>
+                            <div class="aParent"><button onclick="document.location='proveedor'">Agregar proveedor</button> 
+                            </div>
+
+                            <div class="form-group">
+                              <label for="orden">Numero de orden:</label>
+                              <input type="text" class="form-control" id="orden">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="Descripcion">Descripcion:</label>
+                              <input type="text" class="form-control" id="Descripcion">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="fecha">Fecha de arribo:</label>
+                              <input type="date" class="form-control" id="fecha">
+                            </div>
+
+                          <input type=file name=file><input type=submit value="subir excel">
                           </form>
+                          <hr>
+
                           <p>
                             {{message}}
 
@@ -38,4 +68,5 @@
                           {%endif%}
 
                     </div>
+                    
                     {%endblock%}
