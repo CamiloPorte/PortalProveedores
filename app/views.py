@@ -24,7 +24,7 @@ def inicio():
 #vista principal admin
 @app.route('/index', methods=["POST", "GET"])
 def index():
-	return render_template("vista_admin.html")
+	return render_template("index_admin.html")
 
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
