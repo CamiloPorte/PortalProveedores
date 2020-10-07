@@ -4,7 +4,7 @@ import psycopg2
 conn = psycopg2.connect(database=database, user=user, password=passwd, host=host)
 cur = conn.cursor()
 
-#### Código para limpiar la base de datos y setear con la configuración bajo el primer comando SQL ####
+#### Codigo para limpiar la base de datos y setear con la configuración bajo el primer comando SQL ####
 
 sql ="""DROP SCHEMA public CASCADE;
  CREATE SCHEMA public;"""

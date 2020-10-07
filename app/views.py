@@ -7,6 +7,7 @@ from flask import render_template,request,redirect, make_response, session, esca
 from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
 import openpyxl_dictreader
+import pandas as pd
 
 ###############################################################
 #															  #
@@ -23,7 +24,7 @@ def inicio():
 #vista principal admin
 @app.route('/index', methods=["POST", "GET"])
 def index():
-	return render_template("vista_admin.html")
+	return render_template("index_admin.html")
 
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
@@ -51,8 +52,31 @@ def listaproveedor():
 def formulario():
 	return render_template("upload.html")
 
+@app.route("/upload", methods=['GET', 'POST'])
+def upload():
+	if request.method == 'POST':
+		f = request.files['file']
+		filename = f.filename
+		if filename == '':
+			return render_template("upload2.html",aux=0, message="Porfavor seleccione un archivo excel")
+		data_xls = pd.read_excel(f)
+		arr=data_xls.to_numpy()
+		filas, columnas= arr.shape
+
+		#print("======================")
+		#print("filas columnas:", filas, columnas)
+		#for i in range(filas):
+		#	print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
+		#print("======================")
+
+		#return data_xls.to_html()
+		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente" )
+	return render_template("upload2.html",aux=0,message="Porfavor seleccione un archivo excel")
+
+
+'''
 @app.route('/upload', methods = ["POST", "GET"])
-def uploadsd():
+def upload():
 
 	if request.method == "POST":
 		if 'file' not in request.files:
@@ -78,7 +102,7 @@ def uploadsd():
 	else:
 		return render_template("upload.html", message = "Upload")
 
-
+'''
 
 
 

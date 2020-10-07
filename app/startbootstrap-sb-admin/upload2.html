@@ -1,0 +1,72 @@
+{% extends "vista_admin.html" %}
+<title>{% block title %}ingreso pedidos{% endblock %}</title>
+
+{% block content %}
+                    <div class="container-fluid">
+
+                        <h1 class="mt-4">Formulario para agregar pedidos</h1>
+
+                        <form class="form-horizontal" action="" method="POST" enctype=multipart/form-data>
+                            <div class="aParent">
+                              <label for="proveedor">Proveedor</label>
+                              <select class="form-control" id="proveedor">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                            </div>
+                            <div class="aParent"><button onclick="document.location='proveedor'">Agregar proveedor</button> 
+                            </div>
+
+                            <div class="form-group">
+                              <label for="orden">Numero de orden:</label>
+                              <input type="text" class="form-control" id="orden">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="Descripcion">Descripcion:</label>
+                              <input type="text" class="form-control" id="Descripcion">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="fecha">Fecha de arribo:</label>
+                              <input type="date" class="form-control" id="fecha">
+                            </div>
+
+                          <input type=file name=file><input type=submit value="subir excel">
+                          </form>
+                          <hr>
+
+                          <p>
+                            {{message}}
+
+  
+                          </p>
+                          {%if aux==1%}
+
+                          <table class="table table-hover table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Codigo</th>
+                                <th>Descripcion</th>
+                                <th>Cantidad</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {%for i in range(cant)%} 
+                              <tr>
+                                <td>{{data[i][0]}}</td>
+                                <td>{{data[i][1]}}</td>
+                                <td>{{data[i][2]}}</td>
+                              </tr>
+                              {%endfor%}
+
+                            </tbody>
+                          </table>
+                          {%endif%}
+
+                    </div>
+                    
+                    {%endblock%}
