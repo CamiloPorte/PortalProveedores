@@ -44,8 +44,10 @@ def login():
 
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
-	return render_template("vista_admin.html")
-
+	if obtener_tipo(session["usuario"])[1] == 1:
+		return render_template("vista_admin.html")
+	else:
+		return redirect(url_for('login'))
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
 def crear_usuario():

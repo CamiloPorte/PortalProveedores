@@ -13,6 +13,15 @@ def datos_usuario(email):
 	cur.execute(sql)
 	results = cur.fetchone()
 	return results
+
+def obtener_tipo(id):
+	sql ="""
+	SELECT correo,id_tipo,contrasena,id
+	FROM usuarios
+	WHERE id = """ + str(id) +";"
+	cur.execute(sql)
+	results = cur.fetchone()
+	return results
 #### Archivos de Consultas a la base SQL ####
 """
 	SELECT relacion_ofe_atri.valor,atributo, ofertas.id,cupos, ofertas.fecha_creacion ,id_tipo, tipo_ofertas.tipo,estado.nombre, usuarios.id,relacion_usu_atri.valor

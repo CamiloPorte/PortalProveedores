@@ -6163,8 +6163,17 @@ button.bg-light:focus {
   background-color: #dae0e5 !important;
 }
 
+.bg-login {
+  background: url(../assets/img/BG.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
 .bg-dark {
   background-color: #343a40 !important;
+  background: url(../assets/img/BG.jpg);
+  background-position: center;
+  background-size: cover;
 }
 
 a.bg-dark:hover, a.bg-dark:focus,
