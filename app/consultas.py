@@ -17,7 +17,7 @@ def datos_usuario(email):
 def obtener_tipo(id):
 	sql ="""
 	SELECT correo,id_tipo,contrasena,id
-	FROM usuarios
+	FROM usuario
 	WHERE id = """ + str(id) +";"
 	cur.execute(sql)
 	results = cur.fetchone()

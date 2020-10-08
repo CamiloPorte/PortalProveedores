@@ -26,11 +26,9 @@ def login():
 		aux = datos_usuario(user['email'])
 		session["usuario"] = aux[3]
 		if aux[1] == 1:
-			print("admin")
-			return redirect(url_for('vista_admin'))
+			return redirect(url_for('pedido'))
 		elif aux[1] == 2:
-			print("vendedor")
-			return redirect(url_for('vista_vendedor'))
+			return redirect(url_for('pedido'))
 		else:
 			return redirect(url_for('login')) 
 			
