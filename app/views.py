@@ -28,7 +28,7 @@ def login():
 		if aux[1] == 1:
 			return redirect(url_for('pedido'))
 		elif aux[1] == 2:
-			return redirect(url_for('pedido'))
+			return redirect(url_for('index_venta'))
 		else:
 			return redirect(url_for('login')) 
 			
@@ -43,7 +43,7 @@ def login():
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
 	if obtener_tipo(session["usuario"])[1] == 1:
-		return render_template("vista_admin.html")
+		return render_template("pedido.html")
 	else:
 		return redirect(url_for('login'))
 
@@ -53,7 +53,7 @@ def crear_usuario():
 
 @app.route('/pedido', methods=["POST", "GET"])
 def pedido():
-	return render_template("pedido.html")
+	return render_template("pedido.html",vista = "Pedidos")
 
 @app.route('/detalle', methods=["POST", "GET"])
 def detalle():
@@ -128,10 +128,13 @@ def upload():
 
 
 
-##@app.route('/upload', methods = ["POST", "GET"])
-##def uploader():
-	##if request.methods == 'POST':
-	##	f = request.form['excel']
+@app.route('/aux', methods = ["POST", "GET"])
+def aux():
+	return render_template("charts.html")
+
+@app.route('/aux2', methods = ["POST", "GET"])
+def aux2():
+	return render_template("tables.html")
 
 
 
@@ -144,4 +147,4 @@ def upload():
 #unica vista de un vendedor
 @app.route('/index_venta', methods=["POST", "GET"])
 def vista_vendedor():
-	return render_template("vista_vendedor.html")	
+	return render_template("vista_vendedor.html",vista = "Pedidos")	
