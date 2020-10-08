@@ -1,34 +1,51 @@
 {% extends "vista_admin.html" %}
-<title>{% block title %}pedido{% endblock %}</title>
 {% block content %}
 <!--buscador-->
     <div class="container">
-        <form class="form-inline">
-            <div class="form-group">
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="codigo"/>
+        <div class="mx-auto">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <b>{{ form.codigo.label() }}</b>
+                        {% if form.codigo.errors %}
+                            {{ form.codigo(type="text", class="form-control form-control-user is-invalid", placeholder="Ingresar Código") }}
+                            <div class="invalid-feedback">
+                            {% for error in form.codigo.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.codigo(type="text", class="form-control", placeholder="Ingrese Código") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-5">
+                        <b>{{ form.nombre.label() }}</b>
+                        {% if form.nombre.errors %}
+                            {{ form.nombre(type ="text",class="form-control form-control-user is-invalid", placeholder="Ingrese Nombre de producto") }}
+                            <div class="invalid-feedback">
+                            {% for error in form.nombre.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.nombre(type ="text",class="form-control", placeholder="Ingrese Nombre de producto") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group my-4">
+                        <button type="submit" class="btn btn-success my-2">Buscar productos</button>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="nombre"/>
-                </div>
-            </div>
-                <button type="submit" class="btn btn-success btn-lg">Buscar productos</button>
-        </form>
-    
-    </div>
-
-
-<hr> <!--separador buscador y resultados-->
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Primary Card</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
+<hr> <!--separador buscador y resultados-->
+
+<div class="card" >
+  <ul class="list-group list-group-flush">
+    {%for pedido in pedidos%}
+    <li class="list-group-item">{{pedido}}</li>
+    {%endfor%}
+  </ul>
+</div>
 {%endblock%}

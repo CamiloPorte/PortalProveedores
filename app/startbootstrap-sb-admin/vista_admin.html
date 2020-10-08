@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>{% block title %}{% endblock %}</title>        
+        <title>{% block title %}{{vista}}{% endblock %}</title>        
         <link href="/static/dist/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
@@ -42,16 +42,16 @@
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Pedidos</div>
                             <a class="nav-link" href="pedido">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Ver pedido
                             </a>
                             <a class="nav-link" href="upload">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Ingresar pedido
                             </a>
                             <div class="sb-sidenav-menu-heading">Proveedores</div>
                             <a class="nav-link" href="proveedor">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Ingresar proveedor
                             </a>
                             <div class="sb-sidenav-menu-heading">Usuarios</div>
@@ -74,7 +74,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div class="text-muted">Copyright &copy; Pesas Chile 2020</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

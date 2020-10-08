@@ -22,6 +22,39 @@ def obtener_tipo(id):
 	cur.execute(sql)
 	results = cur.fetchone()
 	return results
+
+def obtener_pedidos():
+	sql ="""
+	SELECT nombre,pedido.descripcion,proveedores
+	FROM pedido,proveedores
+	WHERE id_prov = proveedores.id
+	; 
+	"""
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
+def obtener_pedidos_filtrados(codigo,nombre):
+	sql ="""
+	SELECT nombre,pedido.descripcion,proveedores
+	FROM pedido,proveedores
+	WHERE id_prov = proveedores.id
+	; 
+	"""
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
+def obtener_proveedores():
+	sql ="""
+	SELECT id,nombre
+	FROM proveedores
+	;
+	"""
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
 #### Archivos de Consultas a la base SQL ####
 """
 	SELECT relacion_ofe_atri.valor,atributo, ofertas.id,cupos, ofertas.fecha_creacion ,id_tipo, tipo_ofertas.tipo,estado.nombre, usuarios.id,relacion_usu_atri.valor

@@ -31,8 +31,21 @@ def login():
 			return redirect(url_for('index_venta'))
 		else:
 			return redirect(url_for('login')) 
-			
 	return render_template("login.html", form = form)
+
+@app.route('/pedido', methods=["POST", "GET"])
+def pedido():
+	if obtener_tipo(session["usuario"])[1] == 1 or obtener_tipo(session["usuario"])[1] == 2:
+		form = BuscarPedidoForm()
+		codigo_producto = request.form
+		pedidos = obtener_pedidos()
+		if pedidos == None:
+			pedidos = ()
+		if request.method == "POST" and form.validate():
+			pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto[0],codigo_producto[1])
+			return render_template("pedido.html",vista = "Pedidos Filtrados",pedidos = pedidos_filtrados,form = form)
+		return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
+	return redirect(url_for('login'))
 
 ###############################################################
 #															  #
@@ -43,17 +56,13 @@ def login():
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
 	if obtener_tipo(session["usuario"])[1] == 1:
-		return render_template("pedido.html")
+		return redirect(url_for('pedido'))
 	else:
 		return redirect(url_for('login'))
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
 def crear_usuario():
 	return render_template("register.html")
-
-@app.route('/pedido', methods=["POST", "GET"])
-def pedido():
-	return render_template("pedido.html",vista = "Pedidos")
 
 @app.route('/detalle', methods=["POST", "GET"])
 def detalle():
@@ -74,11 +83,13 @@ def formulario():
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
+	form = ingresarPedidoForm()
+	proveedores = obtener_proveedores()
 	if request.method == 'POST':
 		f = request.files['file']
 		filename = f.filename
 		if filename == '':
-			return render_template("upload2.html",aux=0, message="Porfavor seleccione un archivo excel")
+			return render_template("upload2.html",aux=0, message="Porfavor seleccione un archivo excel", vista ="Ingresar Pedidos", form=form)
 		data_xls = pd.read_excel(f)
 		arr=data_xls.to_numpy()
 		filas, columnas= arr.shape
@@ -90,8 +101,8 @@ def upload():
 		#print("======================")
 
 		#return data_xls.to_html()
-		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente" )
-	return render_template("upload2.html",aux=0,message="Porfavor seleccione un archivo excel")
+		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
+	return render_template("upload2.html",aux=0,message="Porfavor seleccione un archivo excel", vista ="Ingresar Pedidos", form=form)
 
 
 '''

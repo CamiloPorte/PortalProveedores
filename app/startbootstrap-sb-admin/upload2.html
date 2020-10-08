@@ -1,25 +1,21 @@
 {% extends "vista_admin.html" %}
-<title>{% block title %}ingreso pedidos{% endblock %}</title>
+<title>{% block title %}Ingreso Pedidos{% endblock %}</title>
 
 {% block content %}
                     <div class="container-fluid">
-
-                        <h1 class="mt-4">Formulario para agregar pedidos</h1>
-
-                        <form class="form-horizontal" action="" method="POST" enctype=multipart/form-data>
-                            <div class="aParent">
-                              <label for="proveedor">Proveedor</label>
-                              <select class="form-control" id="proveedor">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                              </select>
-                            </div>
-                            <div class="aParent"><button onclick="document.location='proveedor'">Agregar proveedor</button> 
-                            </div>
-
+                        <form class="form-horizontal" method="POST" enctype=multipart/form-data>
+                          {{ form.hidden_tag() }}
+                          <b>{{ form.proveedor.label() }}</b>
+                            {% if form.proveedor.errors %}
+                            {{ form.proveedor(class="form-control form-control-user is-invalid" , placeholder="Ingrese tipo") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.proveedor.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.proveedor(class="form-control form-control-user" , placeholder="Ingrese tipo") }}
+                            {% endif %}
                             <div class="form-group">
                               <label for="orden">Numero de orden:</label>
                               <input type="text" class="form-control" id="orden">

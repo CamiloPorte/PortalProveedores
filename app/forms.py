@@ -33,11 +33,14 @@ class loginForm(FlaskForm):
         return True
 
 """
-# login 
+class BuscarPedidoForm(FlaskForm):
+    codigo = StringField('Código', validators=[Length(min=2, max=50)])
+    nombre = StringField('Nombre de producto', validators=[Length(min=2, max=50)])
+
+
 class loginForm(FlaskForm):
     email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
     password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=2, max=50)])
-
     def validate(self):
         results = datos_usuario(self.email.data)
         if not FlaskForm.validate(self):
@@ -48,11 +51,13 @@ class loginForm(FlaskForm):
             return False
         return True
         
-class ingresarPedido(FlaskForm):
-    proveedor=SelectField('Proveedor',choices=[("1","chinito1"),("2","chinito2")] ,validators=[InputRequired()])
+class ingresarPedidoForm(FlaskForm):
+    proveedores = obtener_proveedores()
     numero_de_orden=IntegerField('Numero De Orden', validators=[DataRequired(), Length(min=1, max=50)])
     descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
-    fecha_de_arribo=DateField('Fecha De Arribo', format="'%d/%m/%Y'",Validators=[DataRequired()])
+    fecha_de_arribo=DateField('Fecha De Arribo', format="'%d/%m/%Y'",validators=[DataRequired()])
+    proveedor=SelectField('Proveedor', choices=proveedores ,validators=[DataRequired()])
+
 
 
 class crearUsuarios(FlaskForm):
