@@ -9,22 +9,42 @@ from openpyxl import load_workbook
 import openpyxl_dictreader
 import pandas as pd
 
+
+app.secret_key = "PCPORTAL"
+
+
+@app.route('/', methods=["POST", "GET"])
+def ingresar():
+	form = loginForm(request.form)
+	return render_template("login.html", form = form)
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+	form = loginForm()
+	if request.method == "POST" and form.validate():
+		user = request.form
+		aux = datos_usuario(user['email'])
+		session["usuario"] = aux[3]
+		if aux[1] == 1:
+			print("admin")
+			return redirect(url_for('vista_admin'))
+		elif aux[1] == 2:
+			print("vendedor")
+			return redirect(url_for('vista_vendedor'))
+		else:
+			return redirect(url_for('login')) 
+			
+	return render_template("login.html", form = form)
+
 ###############################################################
 #															  #
 #						VISTAS ADMIN						  #
 #															  #
 ###############################################################
 
-@app.route('/', methods=["POST", "GET"])
-def inicio():
-	return render_template("login.html")
-
-
-
-#vista principal admin
 @app.route('/index', methods=["POST", "GET"])
-def index():
-	return render_template("index_admin.html")
+def vista_admin():
+	return render_template("vista_admin.html")
 
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
@@ -123,5 +143,5 @@ def upload():
 
 #unica vista de un vendedor
 @app.route('/index_venta', methods=["POST", "GET"])
-def index2():
+def vista_vendedor():
 	return render_template("vista_vendedor.html")	

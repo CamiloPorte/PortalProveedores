@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Login</title>
+        <title>Portal Proveedores Pesas Chile</title>
         <link href="/static/dist/css/styles.css" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
@@ -18,31 +18,40 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Bienvenido a Pesas Chile</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="POST" action="login">
+                                            {{ form.hidden_tag() }}
                                             <div class="form-group">
-                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" />
+                                                <b>{{ form.email.label() }}</b>
+                                                    {% if form.email.errors %}
+                                                        {{ form.email(type="email", class="form-control form-control-user is-invalid", placeholder="Ingrese dirección de correo electronico") }}
+                                                        <div class="invalid-feedback">
+                                                        {% for error in form.email.errors %}
+                                                            <span>{{ error }}</span>
+                                                        {% endfor %}
+                                                        </div>
+                                                    {% else %}
+                                                        {{ form.email(type="email", class="form-control", placeholder="Ingrese dirección de correo electronico") }}
+                                                    {% endif %}
                                             </div>
                                             <div class="form-group">
-                                                <label class="small mb-1" for="inputPassword">Password</label>
-                                                <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" />
+                                                <b>{{ form.password.label() }}</b>
+                                                {% if form.password.errors %}
+                                                    {{ form.password(type ="password",class="form-control form-control-user is-invalid", placeholder="Ingrese su contraseña") }}
+                                                    <div class="invalid-feedback">
+                                                    {% for error in form.password.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    {{ form.password(type ="password",class="form-control", placeholder="Ingrese su contraseña") }}
+                                                {% endif %}
                                             </div>
-                                            <div class="form-group">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
-                                                    <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="password.html">Forgot Password?</a>
-                                                <a class="btn btn-primary" href="index.html">Login</a>
-                                            </div>
+                                            <button  type="submit" href="login" class="btn btn-primary btn-user btn-block">
+                                                Ingresar
+                                            </button>
                                         </form>
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +63,7 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div class="text-muted">Copyright &copy; Your Portal Pesas Chile 2020</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

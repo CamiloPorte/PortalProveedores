@@ -37,18 +37,16 @@ class loginForm(FlaskForm):
 class loginForm(FlaskForm):
     email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
     password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=2, max=50)])
-    tipo = SelectField('Tipo de cuenta',choices=[("2","Vendedor"),("1","Administrador")] ,validators=[DataRequired()])
-'''
+
     def validate(self):
-        results = datos_usuario(self.email.data, self.tipo.data)
+        results = datos_usuario(self.email.data)
         if not FlaskForm.validate(self):
             return False
         if results == None or not check_password_hash(results[2],self.password.data):
             self.email.errors.append('Usuario inexistente o contraseña errada')
-            self.tipo.errors.append('Usuario inexistente o contraseña errada')
             self.password.errors.append('Usuario inexistente o contraseña errada')
             return False
-        return True'''
+        return True
         
 class ingresarPedido(FlaskForm):
     proveedor=SelectField('Proveedor',choices=[("1","chinito1"),("2","chinito2")] ,validators=[InputRequired()])

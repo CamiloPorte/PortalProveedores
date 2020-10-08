@@ -5,7 +5,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 conn = psycopg2.connect(database=database, user=user, password=passwd, host=host)
 cur = conn.cursor()
 
-
+def datos_usuario(email):
+	sql ="""
+	SELECT correo,id_tipo,contrasena,id
+	FROM usuario
+	WHERE correo ='""" + email +"';"
+	cur.execute(sql)
+	results = cur.fetchone()
+	return results
 #### Archivos de Consultas a la base SQL ####
 """
 	SELECT relacion_ofe_atri.valor,atributo, ofertas.id,cupos, ofertas.fecha_creacion ,id_tipo, tipo_ofertas.tipo,estado.nombre, usuarios.id,relacion_usu_atri.valor
