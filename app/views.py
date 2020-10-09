@@ -18,6 +18,12 @@ def ingresar():
 	form = loginForm(request.form)
 	return render_template("login.html", form = form)
 
+@app.route('/logout', methods=["POST", "GET"])
+def logout():
+	session.pop("usuario",None)
+	print("Cookies borradas")
+	return redirect(url_for('login'))
+
 @app.route('/login', methods=["POST", "GET"])
 def login():
 	form = loginForm()
@@ -35,17 +41,19 @@ def login():
 
 @app.route('/pedido', methods=["POST", "GET"])
 def pedido():
-	if obtener_tipo(session["usuario"])[1] == 1 or obtener_tipo(session["usuario"])[1] == 2:
-		form = BuscarPedidoForm()
-		codigo_producto = request.form
-		pedidos = obtener_pedidos()
-		if pedidos == None:
-			pedidos = ()
-		if request.method == "POST" and form.validate():
-			pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto[0],codigo_producto[1])
-			return render_template("pedido.html",vista = "Pedidos Filtrados",pedidos = pedidos_filtrados,form = form)
-		return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
-	return redirect(url_for('login'))
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 1 or obtener_tipo(session["usuario"])[1] == 2:
+			form = BuscarPedidoForm()
+			codigo_producto = request.form
+			pedidos = obtener_pedidos()
+			if pedidos == None:
+				pedidos = ()
+			if request.method == "POST" and form.validate():
+				pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto[0],codigo_producto[1])
+				return render_template("pedido.html",vista = "Pedidos Filtrados",pedidos = pedidos_filtrados,form = form)
+			return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
+	else:
+		return redirect(url_for('login'))
 
 ###############################################################
 #															  #
@@ -55,10 +63,13 @@ def pedido():
 
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
-	if obtener_tipo(session["usuario"])[1] == 1:
-		return redirect(url_for('pedido'))
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 1:
+			return redirect(url_for('pedido'))
+		else:
+			return redirect(url_for('login'))
 	else:
-		return redirect(url_for('login'))
+			return redirect(url_for('login'))
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
 def crear_usuario():
@@ -83,26 +94,30 @@ def formulario():
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
-	form = ingresarPedidoForm()
-	proveedores = obtener_proveedores()
-	if request.method == 'POST':
-		f = request.files['file']
-		filename = f.filename
-		if filename == '':
-			return render_template("upload2.html",aux=0, message="Porfavor seleccione un archivo excel", vista ="Ingresar Pedidos", form=form)
-		data_xls = pd.read_excel(f)
-		arr=data_xls.to_numpy()
-		filas, columnas= arr.shape
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 1:
+			form = ingresarPedidoForm()
+			proveedores = obtener_proveedores()
+			if request.method == 'POST':
+				f = request.files['file']
+				filename = f.filename
+				if filename == '':
+					return render_template("upload2.html",aux=0, message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
+				data_xls = pd.read_excel(f)
+				arr=data_xls.to_numpy()
+				filas, columnas= arr.shape
 
-		#print("======================")
-		#print("filas columnas:", filas, columnas)
-		#for i in range(filas):
-		#	print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
-		#print("======================")
+				#print("======================")
+				#print("filas columnas:", filas, columnas)
+				#for i in range(filas):
+				#	print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
+				#print("======================")
 
-		#return data_xls.to_html()
-		return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
-	return render_template("upload2.html",aux=0,message="Porfavor seleccione un archivo excel", vista ="Ingresar Pedidos", form=form)
+				#return data_xls.to_html()
+				return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
+			return render_template("upload2.html",aux=0,message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
+		return redirect(url_for('login'))
+	return redirect(url_for('login')) 
 
 
 '''

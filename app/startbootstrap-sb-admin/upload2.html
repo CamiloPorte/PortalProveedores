@@ -1,47 +1,73 @@
 {% extends "vista_admin.html" %}
-<title>{% block title %}Ingreso Pedidos{% endblock %}</title>
+<title>{% block title %}Ingreso de Pedidos{% endblock %}</title>
 
 {% block content %}
                     <div class="container-fluid">
-                        <form class="form-horizontal" method="POST" enctype=multipart/form-data>
+                        <form method="POST" enctype=multipart/form-data>
                           {{ form.hidden_tag() }}
-                          <b>{{ form.proveedor.label() }}</b>
-                            {% if form.proveedor.errors %}
-                            {{ form.proveedor(class="form-control form-control-user is-invalid" , placeholder="Ingrese tipo") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.proveedor.errors %}
-                                        <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                {{ form.proveedor(class="form-control form-control-user" , placeholder="Ingrese tipo") }}
-                            {% endif %}
-                            <div class="form-group">
-                              <label for="orden">Numero de orden:</label>
-                              <input type="text" class="form-control" id="orden">
+                          <div class="form-group row" >
+                            <b>{{ form.proveedor.label(class="col-sm-10 col-form-label") }}</b>
+                              {% if form.proveedor.errors %}
+                              {{ form.proveedor(class="form-control col-sm-2 form-control-user is-invalid" , placeholder= "Ingrese tipo") }}
+                                  <div class="invalid-feedback">
+                                      {% for error in form.proveedor.errors %}
+                                          <span>{{ error }}</span>
+                                      {% endfor %}
+                                  </div>
+                              {% else %}
+                                  {{ form.proveedor(class="form-control col-sm-2 form-control-user" , placeholder="Ingrese tipo") }}
+                              {% endif %}
+                              <h5 class="col-sm-1 my-2"> Ó </h5>
+                              <a href="proveedor">
+                              <button type="button" class="btn btn-info"  >Añadir</button>
+                              </a>
                             </div>
-
-                            <div class="form-group">
-                              <label for="Descripcion">Descripcion:</label>
-                              <input type="text" class="form-control" id="Descripcion">
-                            </div>
-
-                            <div class="form-group">
-                              <label for="fecha">Fecha de arribo:</label>
-                              <input type="date" class="form-control" id="fecha">
-                            </div>
-
-                          <input type=file name=file><input type=submit value="subir excel">
+                              <div class="form-group row" >
+                              <b>{{ form.numero_de_orden.label(class="col-sm col-form-label") }}</b>
+                                {% if form.numero_de_orden.errors %}
+                                {{ form.numero_de_orden(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Ingrese Número de Orden") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.numero_de_orden.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.numero_de_orden(class="form-control col-sm-6 form-control-user" , placeholder="Ingrese Número de Orden") }}
+                                {% endif %}
+                              </div>
+                            <div class="form-group row" >
+                              <b>{{ form.descripcion.label(class="col-sm col-form-label") }}</b>
+                                {% if form.descripcion.errors %}
+                                {{ form.descripcion(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Descripción del pedido que llegará") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.descripcion.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.descripcion(class="form-control col-sm-6 form-control-user" , placeholder="Descripción del pedido") }}
+                                {% endif %}
+                              </div>
+                            <div class="form-group row" >
+                              <b>{{ form.fecha_de_arribo.label(class="col-sm col-form-label") }}</b>
+                                {% if form.fecha_de_arribo.errors %}
+                                {{ form.descripcion(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Fecha de arribo") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.fecha_de_arribo.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.fecha_de_arribo(class="form-control col-sm-6 form-control-user" , placeholder="Fecha de Arribo DD/MM/AAAA") }}
+                                {% endif %}
+                              </div>
+                          <input type=file name=file ><input type=submit value="Subir excel" class="btn btn-success">
                           </form>
                           <hr>
-
                           <p>
                             {{message}}
-
-  
                           </p>
                           {%if aux==1%}
-
                           <table class="table table-hover table-bordered">
                             <thead>
                               <tr>
@@ -58,7 +84,6 @@
                                 <td>{{data[i][2]}}</td>
                               </tr>
                               {%endfor%}
-
                             </tbody>
                           </table>
                           {%endif%}
