@@ -60,15 +60,16 @@ class ingresarPedidoForm(FlaskForm):
 
 
 
-class crearUsuarios(FlaskForm):
+class crearUsuariosForm(FlaskForm):
+    tipos=obtener_tipos()
     email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
+    confirmacio_email=StringField('Confirmación correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
     password = PasswordField( 'Contraseña', validators=[DataRequired(), Length(min=2, max=50)] )
     nombre_usuario = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
+    apellido1_usuario = StringField('Apellido Paterno', validators=[DataRequired(), Length(min=2, max=50)])
+    apellido2_usuario = StringField('Apellido Materno', validators=[DataRequired(), Length(min=2, max=50)])
+    tipo_cuenta=SelectField('Tipo de cuenta', choices=tipos ,validators=[DataRequired()])
 
-class crearProveedor(FlaskForm):
-    nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
-    descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
-
-class crearProveedores(FlaskForm):
+class crearProveedorForm(FlaskForm):
     nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
     descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])

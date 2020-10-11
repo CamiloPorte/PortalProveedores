@@ -55,6 +55,16 @@ def obtener_proveedores():
 	results = cur.fetchall()
 	return results
 
+def obtener_tipos():
+	sql ="""
+	SELECT id,nombre
+	FROM tipos
+	;
+	"""
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
 #### Archivos de Consultas a la base SQL ####
 """
 	SELECT relacion_ofe_atri.valor,atributo, ofertas.id,cupos, ofertas.fecha_creacion ,id_tipo, tipo_ofertas.tipo,estado.nombre, usuarios.id,relacion_usu_atri.valor

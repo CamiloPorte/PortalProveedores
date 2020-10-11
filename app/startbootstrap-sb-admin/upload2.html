@@ -6,24 +6,24 @@
                         <form method="POST" enctype=multipart/form-data>
                           {{ form.hidden_tag() }}
                           <div class="form-group row" >
-                            <b>{{ form.proveedor.label(class="col-sm-10 col-form-label") }}</b>
+                            <b>{{ form.proveedor.label(class="col-sm-12 col-form-label") }}</b>
                               {% if form.proveedor.errors %}
-                              {{ form.proveedor(class="form-control col-sm-2 form-control-user is-invalid" , placeholder= "Ingrese tipo") }}
+                              {{ form.proveedor(class="form-control col-sm-2 offset-md-1 form-control-user is-invalid" , placeholder= "Ingrese tipo") }}
                                   <div class="invalid-feedback">
                                       {% for error in form.proveedor.errors %}
                                           <span>{{ error }}</span>
                                       {% endfor %}
                                   </div>
                               {% else %}
-                                  {{ form.proveedor(class="form-control col-sm-2 form-control-user" , placeholder="Ingrese tipo") }}
+                                  {{ form.proveedor(class="form-control col-sm-2 offset-md-1 form-control-user" , placeholder="Ingrese tipo") }}
                               {% endif %}
-                              <h5 class="col-sm-1 my-2"> Ó </h5>
+                              <h5 class="col-sm-1 my-2 offset-md-1"> Ó </h5>
                               <a href="proveedor">
                               <button type="button" class="btn btn-info"  >Añadir</button>
                               </a>
                             </div>
                               <div class="form-group row" >
-                              <b>{{ form.numero_de_orden.label(class="col-sm col-form-label") }}</b>
+                              <b>{{ form.numero_de_orden.label(class="col-sm-12 col-form-label") }}</b>
                                 {% if form.numero_de_orden.errors %}
                                 {{ form.numero_de_orden(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Ingrese Número de Orden") }}
                                     <div class="invalid-feedback">
@@ -36,9 +36,9 @@
                                 {% endif %}
                               </div>
                             <div class="form-group row" >
-                              <b>{{ form.descripcion.label(class="col-sm col-form-label") }}</b>
+                              <b>{{ form.descripcion.label(class="col-sm-12 col-form-label") }}</b>
                                 {% if form.descripcion.errors %}
-                                {{ form.descripcion(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Descripción del pedido que llegará") }}
+                                {{ form.descripcion(class="form-control col-sm-6  form-control-user is-invalid" , placeholder= "Descripción del pedido que llegará") }}
                                     <div class="invalid-feedback">
                                         {% for error in form.descripcion.errors %}
                                             <span>{{ error }}</span>
@@ -49,7 +49,7 @@
                                 {% endif %}
                               </div>
                             <div class="form-group row" >
-                              <b>{{ form.fecha_de_arribo.label(class="col-sm col-form-label") }}</b>
+                              <b>{{ form.fecha_de_arribo.label(class="col-sm-12 col-form-label") }}</b>
                                 {% if form.fecha_de_arribo.errors %}
                                 {{ form.descripcion(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Fecha de arribo") }}
                                     <div class="invalid-feedback">
@@ -61,7 +61,13 @@
                                     {{ form.fecha_de_arribo(class="form-control col-sm-6 form-control-user" , placeholder="Fecha de Arribo DD/MM/AAAA") }}
                                 {% endif %}
                               </div>
-                          <input type=file name=file ><input type=submit value="Subir excel" class="btn btn-success">
+                          <div class="form-group row" >
+                            <div class="custom-file col-md-8 mb-1">
+                              <input type="file" name="file" class="custom-file-input" id="customFileLang" lang="es">
+                              <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                            </div>
+                          </div>
+                          <input type=submit value="Subir excel" class="btn btn-success">
                           </form>
                           <hr>
                           <p>

@@ -1,32 +1,40 @@
 {% extends "vista_admin.html" %}
-<title>{% block title %}proveedor{% endblock %}</title>
+<title>{% block title %}Añadir Proveedor{% endblock %}</title>
 {% block content %}
-
-<h3 style="text-align: center">añadir proveedor</h3>
-<form class="form-horizontal" action="/action_page.php">
+<div class="card-body">
+  <form >
+    {{ form.hidden_tag() }}
     <div class="form-group">
-      <label class="control-label col-sm-2" for="nombre">nombre:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="nombre" placeholder="nombre del proveedor">
-      </div>
+      <b>{{ form.nombre_proveedor.label() }}</b>
+      {% if form.nombre_proveedor.errors %}
+          {{ form.nombre_proveedor(class="form-control form-control-user is-invalid py-4 col-sm-6", placeholder="Nombre del Proveedor") }}
+          <div class="invalid-feedback">
+          {% for error in form.nombre_proveedor.errors %}
+              <span>{{ error }}</span>
+          {% endfor %}
+          </div>
+      {% else %}
+          {{ form.nombre_proveedor(class="form-control py-4 col-sm-6", placeholder="Nombre del Proveedor") }}
+      {% endif %}
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-2" for="pwd">Descripcion:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="descripcion " placeholder="que vende este proveedor">
-      </div>
+      <b>{{ form.descripcion.label() }}</b>
+      {% if form.descripcion.errors %}
+          {{ form.descripcion(class="form-control form-control-user py-4 col-sm-6 is-invalid", placeholder="Descripción del Proveedor y sus Productos") }}
+          <div class="invalid-feedback">
+          {% for error in form.nombre_proveedor.errors %}
+              <span>{{ error }}</span>
+          {% endfor %}
+          </div>
+      {% else %}
+          {{ form.descripcion(class="form-control py-4 col-sm-6", placeholder="Descripción del Proveedor y sus Productos") }}
+      {% endif %}
     </div>
-
-    <div class="btn-toolbar">
-        <div class="col-sm-offset-2 col-sm-10">
-        <button type="button" class="btn btn-danger btn-lg" onclick="history.back();" value="Back">volver</button>
+    <div class="row justify-content-around col-sm-6">
         <button type="submit" class="btn btn-success btn-lg">Crear</button>
-
-      </div>
+        <button type="button" class="btn btn-danger btn-lg" onclick="history.back();" value="Back">Volver</button>
     </div>
-
-
-
   </form> 
+</div>
 
 {%endblock%}

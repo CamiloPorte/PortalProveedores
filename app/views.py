@@ -73,7 +73,14 @@ def vista_admin():
 
 @app.route('/crear_usuario', methods=["POST", "GET"])
 def crear_usuario():
-	return render_template("register.html")
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 1:
+			form = crearUsuariosForm()
+			return render_template("register.html",vista="Crear cuenta", form=form)
+		else:
+			return redirect(url_for('login'))
+	else:
+		return redirect(url_for('login'))
 
 @app.route('/detalle', methods=["POST", "GET"])
 def detalle():
@@ -81,8 +88,14 @@ def detalle():
 
 @app.route('/proveedor', methods=["POST", "GET"])
 def proveedor():
-	return render_template("proveedor.html")	
-
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 1:
+			form = crearProveedorForm()
+			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
+		else:
+			return redirect(url_for('login'))
+	else:
+		return redirect(url_for('login'))
 @app.route('/lista_proveedores', methods=["POST", "GET"])
 def listaproveedor():
 	return render_template("lista_proveedores.html")	

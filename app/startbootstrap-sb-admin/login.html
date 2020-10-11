@@ -24,16 +24,16 @@
                                             {{ form.hidden_tag() }}
                                             <div class="form-group">
                                                 <b>{{ form.email.label() }}</b>
-                                                    {% if form.email.errors %}
-                                                        {{ form.email(type="email", class="form-control form-control-user is-invalid", placeholder="Ingrese dirección de correo electronico") }}
-                                                        <div class="invalid-feedback">
-                                                        {% for error in form.email.errors %}
-                                                            <span>{{ error }}</span>
-                                                        {% endfor %}
-                                                        </div>
-                                                    {% else %}
-                                                        {{ form.email(type="email", class="form-control", placeholder="Ingrese dirección de correo electronico") }}
-                                                    {% endif %}
+                                                {% if form.email.errors %}
+                                                    {{ form.email(type="email", class="form-control form-control-user is-invalid", placeholder="Ingrese dirección de correo electronico") }}
+                                                    <div class="invalid-feedback">
+                                                    {% for error in form.email.errors %}
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    {{ form.email(type="email", class="form-control", placeholder="Ingrese dirección de correo electronico") }}
+                                                {% endif %}
                                             </div>
                                             <div class="form-group">
                                                 <b>{{ form.password.label() }}</b>
