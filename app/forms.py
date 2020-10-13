@@ -10,29 +10,6 @@ cur = conn.cursor()
 
 #### Archivo de formularios de la librería wtforms ####
 
-"""
-class boton_postular(FlaskForm):
-    oferta_id = HiddenField(validators=[DataRequired(), Length(min=2, max=50)])
-    guardar = SubmitField('Postular')
-
-
-class loginForm(FlaskForm):
-    email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
-    password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=2, max=50)])
-    tipo = SelectField('Tipo de cuenta',choices=[("1","Administrador"),("2","Profesor"),("3","Alumno")] ,validators=[DataRequired()])
-
-    def validate(self):
-        results = datos_usuario(self.email.data, self.tipo.data)
-        if not FlaskForm.validate(self):
-            return False
-        if results == None or not check_password_hash(results[2],self.password.data):
-            self.email.errors.append('Usuario inexistente o contraseña errada')
-            self.tipo.errors.append('Usuario inexistente o contraseña errada')
-            self.password.errors.append('Usuario inexistente o contraseña errada')
-            return False
-        return True
-
-"""
 class BuscarPedidoForm(FlaskForm):
     codigo = StringField('Código', validators=[Length(min=2, max=50)])
     nombre = StringField('Nombre de producto', validators=[Length(min=2, max=50)])
@@ -69,6 +46,14 @@ class crearUsuariosForm(FlaskForm):
     apellido1_usuario = StringField('Apellido Paterno', validators=[DataRequired(), Length(min=2, max=50)])
     apellido2_usuario = StringField('Apellido Materno', validators=[DataRequired(), Length(min=2, max=50)])
     tipo_cuenta=SelectField('Tipo de cuenta', choices=tipos ,validators=[DataRequired()])
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+        if self.confirmacio_emai.data != self.email.data:
+            self.email.errors.append('Los correos electrónicos deben coincidir')
+            self.confirmacio_email.errors.append('Los correos electrónicos deben coincidir')
+            return False
+        return True
 
 class crearProveedorForm(FlaskForm):
     nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])

@@ -65,6 +65,54 @@ def obtener_tipos():
 	results = cur.fetchall()
 	return results
 
+def existe_producto(codigo):
+	sql ="""
+	SELECT *
+	FROM productos
+	WHERE codigo ='""" + codigo +"';" 
+
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
+def crear_producto(codigo,descripcion):
+	sql="""
+	INSERT INTO productos (codigo, descripcion)
+	VALUES('%s','%s')
+	;
+	"""%(codigo, descripcion) 
+	cur.execute(sql)
+	conn.commit()
+
+def insertar_producto(id_ped,codigo,descripcion):
+	sql="""
+	INSERT INTO prod_pedido (id_ped, codigo,cant)
+	VALUES(%s,'%s',%s)
+	;
+	"""%(id_ped,codigo, descripcion) 
+	cur.execute(sql)
+	conn.commit()
+
+def crear_pedido(id_usu, id_prov, n_orden,descripcion , fecha_arribo, excel):
+	sql="""
+	INSERT INTO pedido (id_usu, id_prov,n_orden, descripcion , fecha_arribo)
+	VALUES(%s,%s,%s,'%s','%s')
+	RETURNING id
+	;
+	"""%(id_usu, id_prov,n_orden, descripcion , fecha_arribo)
+	cur.execute(sql)
+	conn.commit()
+	id_ped = cur.fetchone()
+	filas, columnas= excel.shape
+	for i in range(filas):
+		existe = existe_producto(excel[i][1])
+		if len(existe) == 0:
+			crear_producto(excel[i][1],excel[i][2])
+		insertar_producto(id_ped[0],excel[i][1],excel[i][4])
+		print("codigo: ",excel[i][1],"|","descripcion: ",excel[i][2],"|","cantidad: ",excel[i][4])
+	
+
+
 #### Archivos de Consultas a la base SQL ####
 """
 	SELECT relacion_ofe_atri.valor,atributo, ofertas.id,cupos, ofertas.fecha_creacion ,id_tipo, tipo_ofertas.tipo,estado.nombre, usuarios.id,relacion_usu_atri.valor

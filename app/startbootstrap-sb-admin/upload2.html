@@ -68,6 +68,11 @@
                             </div>
                           </div>
                           <input type=submit value="Subir excel" class="btn btn-success">
+<!--                           {%if aux==1%}
+                            <button action="subirarchivo" class="btn btn-success" >
+                            Ingresar archivo al portal
+                            </button>
+                          {%endif%} -->
                           </form>
                           <hr>
                           <p>
@@ -85,15 +90,15 @@
                             <tbody>
                               {%for i in range(cant)%} 
                               <tr>
-                                <td>{{data[i][0]}}</td>
                                 <td>{{data[i][1]}}</td>
                                 <td>{{data[i][2]}}</td>
+                                <td>{{data[i][4]}}</td>
                               </tr>
                               {%endfor%}
                             </tbody>
                           </table>
                           {%endif%}
-
+                          </form>
                     </div>
                     
                     {%endblock%}

@@ -34,15 +34,39 @@ def login():
 		if aux[1] == 1:
 			return redirect(url_for('pedido'))
 		elif aux[1] == 2:
-			return redirect(url_for('index_venta'))
+			return redirect(url_for('vista_vendedor'))
 		else:
 			return redirect(url_for('login')) 
 	return render_template("login.html", form = form)
 
+
+# Futura funcionalidad de subir archivo separada del despliegue
+# @app.route('/subirarchivo', methods=["POST", "GET"])
+# def subirarchivo():
+# 	f = request.files['file']
+# 	filename = f.filename
+# 	print("vamos bien")
+# 	if filename == '':
+# 		print("alo")
+# 		return render_template("upload2.html",aux=0, message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
+# 	data_xls = pd.read_excel(f)
+# 	arr=data_xls.to_numpy()
+# 	filas, columnas= arr.shape
+# 	print("El archivo es: ",arr)
+	
+
+
+
+###############################################################
+#															  #
+#						VISTAS ADMIN						  #
+#															  #
+###############################################################
+
 @app.route('/pedido', methods=["POST", "GET"])
 def pedido():
 	if session.get('usuario')!= None:
-		if obtener_tipo(session["usuario"])[1] == 1 or obtener_tipo(session["usuario"])[1] == 2:
+		if obtener_tipo(session["usuario"])[1] == 1:
 			form = BuscarPedidoForm()
 			codigo_producto = request.form
 			pedidos = obtener_pedidos()
@@ -54,13 +78,6 @@ def pedido():
 			return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
 	else:
 		return redirect(url_for('login'))
-
-###############################################################
-#															  #
-#						VISTAS ADMIN						  #
-#															  #
-###############################################################
-
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
 	if session.get('usuario')!= None:
@@ -110,60 +127,26 @@ def upload():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = ingresarPedidoForm()
-			proveedores = obtener_proveedores()
 			if request.method == 'POST':
+				datos = request.form
 				f = request.files['file']
 				filename = f.filename
 				if filename == '':
-					return render_template("upload2.html",aux=0, message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
+					return render_template("upload2.html",aux=0, message="Por favor cargue un archivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
 				data_xls = pd.read_excel(f)
 				arr=data_xls.to_numpy()
 				filas, columnas= arr.shape
+				crear_pedido(session["usuario"],datos['proveedor'],datos['numero_de_orden'],datos['descripcion'],datos['fecha_de_arribo'],arr)
 
-				#print("======================")
-				#print("filas columnas:", filas, columnas)
-				#for i in range(filas):
-				#	print("codigo: ",arr[i][0],"|","descripcion: ",arr[i][1],"|","cantidad: ",arr[i][2])
-				#print("======================")
-
-				#return data_xls.to_html()
+				# print("======================")
+				# print("filas columnas:", filas, columnas)
+				# for i in range(filas):
+				# 	print("codigo: ",arr[i][1],"|","descripcion: ",arr[i][2],"|","cantidad: ",arr[i][4])
+				# print("======================")
 				return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
-			return render_template("upload2.html",aux=0,message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
+			return render_template("upload2.html",aux=0,message="Por favor cargue un archivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
 		return redirect(url_for('login'))
 	return redirect(url_for('login')) 
-
-
-'''
-@app.route('/upload', methods = ["POST", "GET"])
-def upload():
-
-	if request.method == "POST":
-		if 'file' not in request.files:
-			return render_template("upload.html", message = "File not selected")
-
-		file = request.files["file"]
-		filename = file.filename
-		if filename == '':
-			return render_template("upload.html", message = "Seleccione un archivo")
-
-		file.save(os.path.join("uploads", file.filename))
-
-		excel_document = load_workbook(os.path.join("uploads", file.filename), data_only=True)
-		filetype= type(excel_document)
-		sheet = excel_document.get_sheet_by_name('Hoja1')
-		resultados=[]
-		reader = openpyxl_dictreader.DictReader(os.path.join("uploads", file.filename),'Hoja1')
-
-		for row in reader :
-			resultados.append(dict(row))
-
-		return render_template("upload.html", resultados=resultados)
-	else:
-		return render_template("upload.html", message = "Upload")
-
-'''
-
-
 
 
 
@@ -186,4 +169,16 @@ def aux2():
 #unica vista de un vendedor
 @app.route('/index_venta', methods=["POST", "GET"])
 def vista_vendedor():
-	return render_template("vista_vendedor.html",vista = "Pedidos")	
+	if session.get('usuario')!= None:
+		if obtener_tipo(session["usuario"])[1] == 2:
+			form = BuscarPedidoForm()
+			codigo_producto = request.form
+			pedidos = obtener_pedidos()
+			if pedidos == None:
+				pedidos = ()
+			if request.method == "POST" and form.validate():
+				pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto[0],codigo_producto[1])
+				return render_template("pedido_vendedor.html",vista = "Pedidos Filtrados",pedidos = pedidos_filtrados,form = form)
+			return render_template("pedido_vendedor.html",vista = "Pedidos",pedidos = pedidos,form = form)
+	else:
+		return redirect(url_for('login'))	

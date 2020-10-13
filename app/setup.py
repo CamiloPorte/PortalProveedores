@@ -70,7 +70,7 @@ CREATE TABLE prod_pedido
  codigo varchar(20),
  cant integer,
  PRIMARY KEY (id_ped, codigo, cant),
- FOREIGN KEY (id_ped) REFERENCES usuario (id),
+ FOREIGN KEY (id_ped) REFERENCES pedido (id),
  FOREIGN KEY (codigo) REFERENCES productos (codigo)
 );
 """
