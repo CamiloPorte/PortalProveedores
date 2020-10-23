@@ -41,11 +41,35 @@
     </div>
 <hr> <!--separador buscador y resultados-->
 
+{%for pedido in pedidos%}
 <div class="card" >
-  <ul class="list-group list-group-flush">
-    {%for pedido in pedidos%}
-    <li class="list-group-item">{{pedido}}</li>
-    {%endfor%}
-  </ul>
+    <div class="card-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                  Nº de pedido: {{pedido[0]}}
+                </div>
+                <div class="col-sm-3">
+                  Proveedor: {{pedido[1]}}
+                </div>
+                <div class="col-sm">
+                  Descripción de proovedor: {{pedido[2]}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-2">
+                  Fecha de Arribo: {{pedido[4]}}
+                </div>
+                <div class="col-sm">
+                  Descripción: {{pedido[3]}}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{%endfor%}
 {%endblock%}

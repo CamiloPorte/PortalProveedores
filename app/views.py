@@ -108,6 +108,11 @@ def proveedor():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearProveedorForm()
+			if request.method == 'POST' and form.validate():
+				datos = request.form
+				print("funciona")
+				crear_proveedor(datos['nombre_proveedor'],datos['descripcion'])
+				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
 			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
 		else:
 			return redirect(url_for('login'))
@@ -127,7 +132,7 @@ def upload():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = ingresarPedidoForm()
-			if request.method == 'POST':
+			if request.method == 'POST' and form.validate():
 				datos = request.form
 				f = request.files['file']
 				filename = f.filename

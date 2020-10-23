@@ -25,13 +25,14 @@ def obtener_tipo(id):
 
 def obtener_pedidos():
 	sql ="""
-	SELECT nombre,pedido.descripcion,proveedores
+	SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, fecha_arribo
 	FROM pedido,proveedores
 	WHERE id_prov = proveedores.id
 	; 
 	"""
 	cur.execute(sql)
 	results = cur.fetchall()
+	print(results)
 	return results
 
 def obtener_pedidos_filtrados(codigo,nombre):
@@ -110,7 +111,16 @@ def crear_pedido(id_usu, id_prov, n_orden,descripcion , fecha_arribo, excel):
 			crear_producto(excel[i][1],excel[i][2])
 		insertar_producto(id_ped[0],excel[i][1],excel[i][4])
 		print("codigo: ",excel[i][1],"|","descripcion: ",excel[i][2],"|","cantidad: ",excel[i][4])
-	
+
+def crear_proveedor(nombre,descripcion):
+	print("funciono por ahora")
+	sql="""
+	INSERT INTO proveedores (nombre, descripcion)
+	VALUES('%s','%s')
+	;
+	"""%(nombre,descripcion) 
+	cur.execute(sql)
+	conn.commit()
 
 
 #### Archivos de Consultas a la base SQL ####
