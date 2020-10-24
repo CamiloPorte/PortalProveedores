@@ -1,116 +1,117 @@
 {% extends "vista_admin.html" %}
 <title>{% block title %}Añadir Proveedor{% endblock %}</title>
 {% block content %}
-                                    <div class="card-body">
-                                        <form>
-                                            {{ form.hidden_tag() }}
-                                            <div class="form-group">
-                                                {{ form.nombre_usuario.label(class="small mb-1") }}
-                                                {% if form.nombre_usuario.errors %}
-                                                    {{ form.nombre_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su nombre",type="text") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.nombre_usuario.errors %}
-                                                            <span>{{ error }}</span>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    {{ form.nombre_usuario(class="form-control py-4" , placeholder="Ingrese su nombre",type="text") }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        {{ form.apellido1_usuario.label(class="small mb-1") }}
-                                                        {% if form.apellido1_usuario.errors %}
-                                                            {{ form.apellido1_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su apellido paterno",type="text") }}
-                                                            <div class="invalid-feedback">
-                                                                {% for error in form.apellido1_usuario.errors %}
-                                                                    <span>{{ error }}</span>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            {{ form.apellido1_usuario(class="form-control py-4" , placeholder="Ingrese su apellido paterno",type="text") }}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        {{ form.apellido2_usuario.label(class="small mb-1") }}
-                                                        {% if form.apellido2_usuario.errors %}
-                                                            {{ form.apellido2_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su apellido materno",type="text") }}
-                                                            <div class="invalid-feedback">
-                                                                {% for error in form.apellido1_usuario.errors %}
-                                                                    <span>{{ error }}</span>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            {{ form.apellido2_usuario(class="form-control py-4" , placeholder="Ingrese su apellido materno",type="text") }}
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        {{ form.email.label(class="small mb-1") }}
-                                                        {% if form.email.errors %}
-                                                            {{ form.email(class="form-control py-4 is-invalid" , placeholder= "Ingrese Correo Electronico",type="email") }}
-                                                            <div class="invalid-feedback">
-                                                                {% for error in form.email.errors %}
-                                                                    <span>{{ error }}</span>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            {{ form.email(class="form-control py-4" , placeholder="Ingrese Correo Electronico",type="email") }}
-                                                        {% endif %} 
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        {{ form.confirmacio_email.label(class="small mb-1") }}
-                                                        {% if form.confirmacio_email.errors %}
-                                                            {{ form.confirmacio_email(class="form-control py-4 is-invalid" , placeholder= "Ingrese Correo Electronico",type="email") }}
-                                                            <div class="invalid-feedback">
-                                                                {% for error in form.email.errors %}
-                                                                    <span>{{ error }}</span>
-                                                                {% endfor %}
-                                                            </div>
-                                                        {% else %}
-                                                            {{ form.confirmacio_email(class="form-control py-4" , placeholder="Ingrese Correo Electronico de nuevo",type="email") }}
-                                                        {% endif %} 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                {{ form.password.label(class="small mb-1") }}
-                                                {% if form.password.errors %}
-                                                    {{ form.password(class="form-control py-4 is-invalid" , placeholder= "Ingrese contraseña",type="password") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.password.errors %}
-                                                            <span>{{ error }}</span>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    {{ form.password(class="form-control py-4" , placeholder="Ingrese contraseña",type="password") }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="form-row">
-                                                {{ form.tipo_cuenta.label(class="small mb-1") }}
-                                                {% if form.tipo_cuenta.errors %}
-                                                    {{ form.tipo_cuenta(class="form-control py-4 is-invalid" , placeholder= "Ingrese contraseña",type="password") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.password.errors %}
-                                                            <span>{{ error }}</span>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% else %}
-                                                    {{ form.tipo_cuenta(class="form-control py-4" , placeholder="Ingrese contraseña",type="password") }}
-                                                {% endif %}
-                                            </div>
-                                            <div class="row justify-content-between">
-                                                <div class="form-group mt-4 mb-0"><a class="btn btn-success btn-block" href="login.html">Create Cuenta</a></div>
-                                                <div class="form-group mt-4 mb-0"><a class="btn btn-danger btn-block" onclick="history.back();">Volver</a></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>{%endblock%}
+    <div class="card-body">
+        <form method="POST" action="crear_usuario">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.nombre_usuario.label(class="small mb-1") }}
+                {% if form.nombre_usuario.errors %}
+                    {{ form.nombre_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su nombre",type="text") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.nombre_usuario.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.nombre_usuario(class="form-control py-4" , placeholder="Ingrese su nombre",type="text") }}
+                {% endif %}
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.apellido1_usuario.label(class="small mb-1") }}
+                        {% if form.apellido1_usuario.errors %}
+                            {{ form.apellido1_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su apellido paterno",type="text") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.apellido1_usuario.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.apellido1_usuario(class="form-control py-4" , placeholder="Ingrese su apellido paterno",type="text") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.apellido2_usuario.label(class="small mb-1") }}
+                        {% if form.apellido2_usuario.errors %}
+                            {{ form.apellido2_usuario(class="form-control py-4 is-invalid" , placeholder= "Ingrese su apellido materno",type="text") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.apellido1_usuario.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.apellido2_usuario(class="form-control py-4" , placeholder="Ingrese su apellido materno",type="text") }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.email.label(class="small mb-1") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control py-4 is-invalid" , placeholder= "Ingrese Correo Electronico",type="email") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control py-4" , placeholder="Ingrese Correo Electronico",type="email") }}
+                        {% endif %} 
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{ form.confirmacio_email.label(class="small mb-1") }}
+                        {% if form.confirmacio_email.errors %}
+                            {{ form.confirmacio_email(class="form-control py-4 is-invalid" , placeholder= "Ingrese Correo Electronico",type="email") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirmacio_email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.confirmacio_email(class="form-control py-4" , placeholder="Ingrese Correo Electronico de nuevo",type="email") }}
+                        {% endif %} 
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                {{ form.password.label(class="small mb-1") }}
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control py-4 is-invalid" , placeholder= "Ingrese contraseña",type="password") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control py-4" , placeholder="Ingrese contraseña",type="password") }}
+                {% endif %}
+            </div>
+            <div class="form-row">
+                {{ form.tipo_cuenta.label(class="small mb-1") }}
+                {% if form.tipo_cuenta.errors %}
+                    {{ form.tipo_cuenta(class="form-control py-4 is-invalid" , placeholder= "Ingrese tipo") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.tipo_cuenta.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.tipo_cuenta(class="form-control py-4" , placeholder="Ingrese tipo") }}
+                {% endif %}
+            </div>
+            <div class="row justify-content-between">
+                <button type="submit" href="crear_usuario" class="form-group mt-4 mb-0 btn btn-success">Create Cuenta</button>
+                <div class="form-group mt-4 mb-0"><a class="btn btn-danger btn-block" onclick="history.back();">Volver</a></div>
+            </div>
+        </form>
+    </div>
+</div>
+{%endblock%}

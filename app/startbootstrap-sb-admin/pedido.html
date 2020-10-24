@@ -42,34 +42,37 @@
 <hr> <!--separador buscador y resultados-->
 
 {%for pedido in pedidos%}
-<div class="card" >
-    <div class="card-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-2">
-                  Nº de pedido: {{pedido[0]}}
+<a href="detalle/{{pedido[5]}}" class="text-reset text-decoration-none">
+    <div class="card" >
+        <div class="card-header">
+            <div class="row justify-content-start">
+                <div class="col-2">
+                  Nº de orden: {{pedido[0]}}
                 </div>
-                <div class="col-sm-3">
+                <div class="col-3">
                   Proveedor: {{pedido[1]}}
                 </div>
-                <div class="col-sm">
+                <div class="col">
                   Descripción de proovedor: {{pedido[2]}}
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body">
-        <div class="container">
+        <div class="card-body">
             <div class="row">
                 <div class="col-sm-2">
-                  Fecha de Arribo: {{pedido[4]}}
+                  Fecha de Arribo : {{pedido[4]}}
                 </div>
                 <div class="col-sm">
                   Descripción: {{pedido[3]}}
                 </div>
+                {% if pedido|length >= 7 %}
+                <div class="col-sm">
+                  Unidad: {{pedido[3]}}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
+</a>
 {%endfor%}
 {%endblock%}

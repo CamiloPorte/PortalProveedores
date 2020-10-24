@@ -36,7 +36,6 @@ class ingresarPedidoForm(FlaskForm):
     proveedor=SelectField('Proveedor', choices=proveedores ,validators=[DataRequired()])
 
 
-
 class crearUsuariosForm(FlaskForm):
     tipos=obtener_tipos()
     email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
@@ -45,16 +44,29 @@ class crearUsuariosForm(FlaskForm):
     nombre_usuario = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
     apellido1_usuario = StringField('Apellido Paterno', validators=[DataRequired(), Length(min=2, max=50)])
     apellido2_usuario = StringField('Apellido Materno', validators=[DataRequired(), Length(min=2, max=50)])
-    tipo_cuenta=SelectField('Tipo de cuenta', choices=tipos ,validators=[DataRequired()])
+    tipo_cuenta=SelectField('Tipo de cuenta', coerce=int,choices=[(tipo[0],tipo[1])for tipo in tipos] ,validators=[DataRequired()])
     def validate(self):
+        results = datos_usuario(self.email.data)
         if not FlaskForm.validate(self):
             return False
-        if self.confirmacio_emai.data != self.email.data:
-            self.email.errors.append('Los correos electrónicos deben coincidir')
-            self.confirmacio_email.errors.append('Los correos electrónicos deben coincidir')
+        if self.confirmacio_email.data != self.email.data or results != None:
+            if self.confirmacio_email.data != self.email.data:
+                self.email.errors.append('Los correos electrónicos deben coincidir')
+                self.confirmacio_email.errors.append('Los correos electrónicos deben coincidir')
+            if results != None:
+                self.email.errors.append('Usuario ya existente')
+                self.confirmacio_email.errors.append('Usuario ya existente')
             return False
         return True
 
 class crearProveedorForm(FlaskForm):
     nombre_proveedor = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
     descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
+
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+        if existe_proveedor(self.nombre_proveedor.data):
+            self.nombre_proveedor.errors.append('Proveedor ya existente')
+            return False
+        return True

@@ -12,6 +12,10 @@ import pandas as pd
 
 app.secret_key = "PCPORTAL"
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
 
 @app.route('/', methods=["POST", "GET"])
 def ingresar():
@@ -40,22 +44,6 @@ def login():
 	return render_template("login.html", form = form)
 
 
-# Futura funcionalidad de subir archivo separada del despliegue
-# @app.route('/subirarchivo', methods=["POST", "GET"])
-# def subirarchivo():
-# 	f = request.files['file']
-# 	filename = f.filename
-# 	print("vamos bien")
-# 	if filename == '':
-# 		print("alo")
-# 		return render_template("upload2.html",aux=0, message="Por favor cargue un arvhivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
-# 	data_xls = pd.read_excel(f)
-# 	arr=data_xls.to_numpy()
-# 	filas, columnas= arr.shape
-# 	print("El archivo es: ",arr)
-	
-
-
 
 ###############################################################
 #															  #
@@ -78,11 +66,14 @@ def pedido():
 			return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
 	else:
 		return redirect(url_for('login'))
+
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
-			return redirect(url_for('pedido'))
+			form = BuscarPedidoForm()
+			pedidos = obtener_pedidos()
+			return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
 		else:
 			return redirect(url_for('login'))
 	else:
@@ -93,15 +84,20 @@ def crear_usuario():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearUsuariosForm()
+			if request.method == "POST" and form.validate():
+				datos = request.form
+				crear_usuarios(datos['email'],datos['password'],datos['nombre_usuario'],datos['apellido1_usuario'],datos['apellido2_usuario'],datos['tipo_cuenta'])
+				return render_template("register.html",vista="Crear cuenta", form=form)
 			return render_template("register.html",vista="Crear cuenta", form=form)
 		else:
 			return redirect(url_for('login'))
 	else:
 		return redirect(url_for('login'))
 
-@app.route('/detalle', methods=["POST", "GET"])
-def detalle():
-	return render_template("detalle.html")	
+@app.route('/detalle/<id>', methods=["POST", "GET"])
+def detalle(id):
+	datos = obtener_productos_pedido(id)
+	return render_template("detalle.html", vista="Detalle Pedido", datos = datos)	
 
 @app.route('/proveedor', methods=["POST", "GET"])
 def proveedor():
@@ -110,7 +106,6 @@ def proveedor():
 			form = crearProveedorForm()
 			if request.method == 'POST' and form.validate():
 				datos = request.form
-				print("funciona")
 				crear_proveedor(datos['nombre_proveedor'],datos['descripcion'])
 				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
 			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
@@ -123,9 +118,6 @@ def listaproveedor():
 	return render_template("lista_proveedores.html")	
 
 
-@app.route('/formulario', methods = ["POST", "GET"])
-def formulario():
-	return render_template("upload.html")
 
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
@@ -143,11 +135,6 @@ def upload():
 				filas, columnas= arr.shape
 				crear_pedido(session["usuario"],datos['proveedor'],datos['numero_de_orden'],datos['descripcion'],datos['fecha_de_arribo'],arr)
 
-				# print("======================")
-				# print("filas columnas:", filas, columnas)
-				# for i in range(filas):
-				# 	print("codigo: ",arr[i][1],"|","descripcion: ",arr[i][2],"|","cantidad: ",arr[i][4])
-				# print("======================")
 				return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
 			return render_template("upload2.html",aux=0,message="Por favor cargue un archivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
 		return redirect(url_for('login'))
@@ -157,7 +144,7 @@ def upload():
 
 @app.route('/aux', methods = ["POST", "GET"])
 def aux():
-	return render_template("charts.html")
+	return render_template("404.html")
 
 @app.route('/aux2', methods = ["POST", "GET"])
 def aux2():
