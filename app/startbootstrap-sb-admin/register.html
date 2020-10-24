@@ -114,4 +114,28 @@
         </form>
     </div>
 </div>
+<table class="table table-hover">
+<thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Tipo de cuenta</th>
+    <th scope="col">Nombres</th>
+    <th scope="col">Apellido Materno</th>
+    <th scope="col">Apellido Paterno</th>
+    <th scope="col">Correo</th>
+  </tr>
+</thead>
+<tbody>
+  {%for item in usuarios%} 
+  <tr>
+    <th scope="row">{{loop.index}}</th>
+    <td>{{item[0]}}</td>
+    <td>{{item[1]}}</td>
+    <td>{{item[2]}}</td>
+    <td>{{item[3]}}</td>
+    <td>{{item[4]}}</td>
+  </tr>
+  {%endfor%}
+</tbody>
+</table>
 {%endblock%}

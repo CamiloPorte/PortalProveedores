@@ -84,11 +84,12 @@ def crear_usuario():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearUsuariosForm()
+			usuarios = obtener_usuarios()
 			if request.method == "POST" and form.validate():
 				datos = request.form
 				crear_usuarios(datos['email'],datos['password'],datos['nombre_usuario'],datos['apellido1_usuario'],datos['apellido2_usuario'],datos['tipo_cuenta'])
-				return render_template("register.html",vista="Crear cuenta", form=form)
-			return render_template("register.html",vista="Crear cuenta", form=form)
+				return render_template("register.html",vista="Crear cuenta", form=form, usuarios = usuarios)
+			return render_template("register.html",vista="Crear cuenta", form=form, usuarios = usuarios)
 		else:
 			return redirect(url_for('login'))
 	else:
@@ -104,11 +105,12 @@ def proveedor():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearProveedorForm()
+			proveedores = obtener_proveedores()
 			if request.method == 'POST' and form.validate():
 				datos = request.form
 				crear_proveedor(datos['nombre_proveedor'],datos['descripcion'])
-				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
-			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form)
+				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
+			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
 		else:
 			return redirect(url_for('login'))
 	else:

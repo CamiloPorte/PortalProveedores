@@ -14,6 +14,18 @@ def datos_usuario(email):
 	results = cur.fetchone()
 	return results
 
+def obtener_usuarios():
+	sql ="""
+	SELECT tipos.nombre,usuario.nombre,apellido1,apellido2,correo,usuario.id
+	FROM usuario, tipos
+	WHERE usuario.id_tipo = tipos.id
+	ORDER BY usuario.id
+	;
+	"""
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
 def obtener_tipo(id):
 	sql ="""
 	SELECT correo,id_tipo,contrasena,id
@@ -51,7 +63,7 @@ def obtener_pedidos_filtrados(codigo,nombre):
 
 def obtener_proveedores():
 	sql ="""
-	SELECT id,nombre
+	SELECT id,nombre,descripcion
 	FROM proveedores
 	;
 	"""
