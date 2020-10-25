@@ -2,7 +2,7 @@ from configuraciones import *
 import psycopg2
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateTimeField, HiddenField, IntegerField, DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError, InputRequired
+from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError, InputRequired, Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 from consultas import *
 conn = psycopg2.connect(database=database, user=user, password=passwd, host=host)
@@ -11,8 +11,24 @@ cur = conn.cursor()
 #### Archivo de formularios de la librería wtforms ####
 
 class BuscarPedidoForm(FlaskForm):
-    codigo = StringField('Código', validators=[Length(min=2, max=50)])
-    nombre = StringField('Nombre de producto', validators=[Length(min=2, max=50)])
+    proveedores = obtener_proveedores()
+    tupla = (0,"Elija un proveedor")
+    proveedores.insert(0,tupla)
+
+    codigo = StringField('Código')
+    nombre = StringField('Nombre de producto')
+    numero_de_orden=IntegerField('Numero De Orden')
+    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional()])
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+            if (self.codigo.data != None or self.nombre.data != None) and (self.numero_de_orden != None or (self.proveedor.data != 0 or self.proveedor.data != None)):
+                self.codigo.errors.append('La búsqueda debe hacerse por número de orden/proveedor o por código, no los dos')
+                self.nombre.errors.append('La búsqueda debe hacerse por número de orden/proveedor o por código, no los dos')
+                self.numero_de_orden.errors.append('La búsqueda debe hacerse por número de orden/proveedor o por código, no los dos')
+                self.proveedor.errors.append('La búsqueda debe hacerse por número de orden/proveedor o por código, no los dos')
+                return False
+        return True
 
 
 class loginForm(FlaskForm):

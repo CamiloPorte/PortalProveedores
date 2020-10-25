@@ -47,19 +47,46 @@ def obtener_pedidos():
 	results = cur.fetchall()
 	return results
 
-def obtener_pedidos_filtrados(codigo,nombre):
+def obtener_pedidos_filtrados(codigo,nombre,numero_orden,proveedor):
+	if codigo != None:
+		sql ="""
+		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant
+		FROM pedido,proveedores, prod_pedido,productos
+		WHERE id_prov = proveedores.id
+		AND prod_pedido.codigo = productos.codigo
+		AND prod_pedido.id_ped = pedido.id
+		AND productos.codigo = '%s'
+		; 
+		"""%(codigo.upper())
+		cur.execute(sql)
+		results = cur.fetchall()
+		return results
+
+	if nombre != None:
+		sql ="""
+		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,productos.descripcion
+		FROM pedido,proveedores, prod_pedido,productos
+		WHERE id_prov = proveedores.id
+		AND prod_pedido.codigo = productos.codigo
+		AND prod_pedido.id_ped = pedido.id
+		AND productos.descripcion LIKE '%"""+nombre+"%';"
+		cur.execute(sql)
+		results = cur.fetchall()
+		return results
+
 	sql ="""
-	SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant
-	FROM pedido,proveedores, prod_pedido,productos
+	SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id
+	FROM pedido,proveedores
 	WHERE id_prov = proveedores.id
-	AND prod_pedido.codigo = producto.codigo
-	AND prod_pedido.id_ped = pedido.id
-	AND productos.codigo = "%s"
-	; 
-	"""%(codigo.upper())
+	AND id_prov = proveedores.id
+	AND id_prov = %s
+	AND n_orden = %s
+	;"""%(proveedor,numero_orden)
 	cur.execute(sql)
 	results = cur.fetchall()
 	return results
+
+		
 
 def obtener_proveedores():
 	sql ="""
