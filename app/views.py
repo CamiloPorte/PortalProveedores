@@ -171,8 +171,8 @@ def vista_vendedor():
 			if pedidos == None:
 				pedidos = ()
 			if request.method == "POST" and form.validate():
-				pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto[0],codigo_producto[1])
+				pedidos_filtrados = obtener_pedidos_filtrados(codigo_producto.get('codigo'),codigo_producto.get('nombre'),codigo_producto.get('numero_de_orden'),codigo_producto.get('proveedor'))
 				return render_template("pedido_vendedor.html",vista = "Pedidos Filtrados",pedidos = pedidos_filtrados,form = form)
 			return render_template("pedido_vendedor.html",vista = "Pedidos",pedidos = pedidos,form = form)
 	else:
-		return redirect(url_for('login'))	
+		return redirect(url_for('login'))

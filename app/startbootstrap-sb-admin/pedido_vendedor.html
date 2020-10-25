@@ -1,75 +1,155 @@
 {% extends "vista_vendedor.html" %}
 {% block content %}
 <!--buscador-->
-    <div class="container">
-        <div class="mx-auto">
-            <form method="POST">
-                {{ form.hidden_tag() }}
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <b>{{ form.codigo.label() }}</b>
-                        {% if form.codigo.errors %}
-                            {{ form.codigo(type="text", class="form-control form-control-user is-invalid", placeholder="Ingresar Código") }}
-                            <div class="invalid-feedback">
-                            {% for error in form.codigo.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.codigo(type="text", class="form-control", placeholder="Ingrese Código") }}
-                        {% endif %}
+<div id="accordion">
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="mt-0 mb-1 btn btn-link text-reset text-decoration-none" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Buscar por nombre o código del producto.
+                </button>
+              </h5>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                    <div class="container">
+                        <div class="mx-auto">
+                            <form method="POST" action="index_venta">
+                                {{ form.hidden_tag() }}
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <b>{{ form.codigo.label() }}</b>
+                                        {% if form.codigo.errors %}
+                                            {{ form.codigo(type="text", class="form-control form-control-user is-invalid", placeholder="Ingresar Código") }}
+                                            <div class="invalid-feedback">
+                                            {% for error in form.codigo.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.codigo(type="text", class="form-control", placeholder="Ingrese Código") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <b>{{ form.nombre.label() }}</b>
+                                        {% if form.nombre.errors %}
+                                            {{ form.nombre(type ="text",class="form-control form-control-user is-invalid", placeholder="Ingrese Nombre de producto") }}
+                                            <div class="invalid-feedback">
+                                            {% for error in form.nombre.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.nombre(type ="text",class="form-control", placeholder="Ingrese Nombre de producto") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group my-4">
+                                        <button type="submit" class="btn btn-success my-2" href="/index_venta">Buscar productos</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group col-md-5">
-                        <b>{{ form.nombre.label() }}</b>
-                        {% if form.nombre.errors %}
-                            {{ form.nombre(type ="text",class="form-control form-control-user is-invalid", placeholder="Ingrese Nombre de producto") }}
-                            <div class="invalid-feedback">
-                            {% for error in form.nombre.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form.nombre(type ="text",class="form-control", placeholder="Ingrese Nombre de producto") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group my-4">
-                        <button type="submit" class="btn btn-success my-2">Buscar productos</button>
-                    </div>
-                </div>
-            </form>
+              </div>
+            </div>
         </div>
+      </div>
+      <div class="col-sm-6">
+         <div class="card"> 
+            <div class="card-header" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="mt-0 mb-1 btn btn-link collapsed text-reset text-decoration-none" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Buscar por número de orden y proveedor.
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="card-body">
+                <div class="container">
+                    <div class="mx-auto">
+                        <form method="POST" action="index_venta">
+                            {{ form.hidden_tag() }}
+                            <div class="form-row">
+                                <div class="form-group col-md-5">
+                                    <b>{{ form.numero_de_orden.label() }}</b>
+                                    {% if form.numero_de_orden.errors %}
+                                        {{ form.numero_de_orden(type="text", class="form-control form-control-user is-invalid", placeholder="Ingresar número de orden") }}
+                                        <div class="invalid-feedback">
+                                        {% for error in form.numero_de_orden.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.numero_de_orden(type="text", class="form-control", placeholder="Ingrese número de orden") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <b>{{ form.proveedor.label() }}</b>
+                                    {% if form.proveedor.errors %}
+                                        {{ form.proveedor(class="form-control form-control-user is-invalid", placeholder="Ingrese nombre del proveedor") }}
+                                        <div class="invalid-feedback">
+                                        {% for error in form.proveedor.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.proveedor(class="form-control", placeholder="Ingrese nombre del proveedor") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group my-4">
+                                    <button type="submit" class="btn btn-success my-2" href="/index_venta">Buscar productos</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+              </div>
+            </div>
+          </div>
+      </div>
     </div>
+</div>
+
 <hr> <!--separador buscador y resultados-->
 
 {%for pedido in pedidos%}
-<div class="card" >
-    <div class="card-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-2">
-                  Nº de pedido: {{pedido[0]}}
+<a href="detalle/{{pedido[5]}}" class="text-reset text-decoration-none">
+    <div class="card" >
+        <div class="card-header">
+            <div class="row justify-content-start">
+                <div class="col-2">
+                  Nº de orden: {{pedido[0]}}
                 </div>
-                <div class="col-sm-3">
+                <div class="col-3">
                   Proveedor: {{pedido[1]}}
                 </div>
-                <div class="col-sm">
+                <div class="col">
                   Descripción de proovedor: {{pedido[2]}}
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-body">
-        <div class="container">
+        <div class="card-body">
             <div class="row">
                 <div class="col-sm-2">
-                  Fecha de Arribo: {{pedido[4]}}
+                  Fecha de Arribo : {{pedido[4]}}
                 </div>
                 <div class="col-sm">
                   Descripción: {{pedido[3]}}
                 </div>
+                {% if pedido|length >= 7 %}
+                <div class="col-sm">
+                  Unidades: {{pedido[6]}}
+                </div>
+<!--                     {% if pedido|length >= 8 %}
+                    <div class="col-sm">
+                      : {{pedido[7]}}
+                    </div>
+                    {% endif %} -->
+                {% endif %}
             </div>
         </div>
     </div>
-</div>
+</a>
 {%endfor%}
 {%endblock%}
