@@ -98,7 +98,7 @@ def crear_usuario():
 @app.route('/detalle/<id>', methods=["POST", "GET"])
 def detalle(id):
 	datos = obtener_productos_pedido(id)
-	return render_template("detalle.html", vista="Detalle Pedido", datos = datos)	
+	return render_template("detalle.html", vista="Detalle Pedido", datos = datos)
 
 @app.route('/proveedor', methods=["POST", "GET"])
 def proveedor():
@@ -176,3 +176,8 @@ def vista_vendedor():
 			return render_template("pedido_vendedor.html",vista = "Pedidos",pedidos = pedidos,form = form)
 	else:
 		return redirect(url_for('login'))
+
+@app.route('/detalle_v/<id>', methods=["POST", "GET"])
+def detalle_v(id):
+	datos = obtener_productos_pedido(id)
+	return render_template("detalle_vendedor.html", vista="Detalle Pedido", datos = datos)
