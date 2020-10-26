@@ -2,7 +2,7 @@ from configuraciones import *
 import psycopg2
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateTimeField, HiddenField, IntegerField, DateField
-from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError, InputRequired, Optional
+from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError, InputRequired, Optional,Regexp
 from werkzeug.security import generate_password_hash, check_password_hash
 from consultas import *
 conn = psycopg2.connect(database=database, user=user, password=passwd, host=host)
@@ -15,10 +15,10 @@ class BuscarPedidoForm(FlaskForm):
     tupla = (0,"Elija un proveedor")
     proveedores.insert(0,tupla)
 
-    codigo = StringField('Código')
-    nombre = StringField('Nombre de producto')
+    codigo = StringField('Código',validators=[Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
+    nombre = StringField('Nombre de producto',validators=[Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
     numero_de_orden=IntegerField('Numero De Orden')
-    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional()])
+    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional(),Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
     def validate(self):
         if not FlaskForm.validate(self):
             return False

@@ -88,8 +88,8 @@ def crear_usuario():
 			if request.method == "POST" and form.validate():
 				datos = request.form
 				crear_usuarios(datos['email'],datos['password'],datos['nombre_usuario'],datos['apellido1_usuario'],datos['apellido2_usuario'],datos['tipo_cuenta'])
-				return render_template("register.html",vista="Crear cuenta", form=form, usuarios = usuarios)
-			return render_template("register.html",vista="Crear cuenta", form=form, usuarios = usuarios)
+				return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
+			return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
 		else:
 			return redirect(url_for('login'))
 	else:
