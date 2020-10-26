@@ -155,10 +155,10 @@ def insertar_producto(id_ped,codigo,cant):
 def crear_pedido(id_usu, id_prov, n_orden,descripcion , fecha_arribo, excel):
 	sql="""
 	INSERT INTO pedido (id_usu, id_prov,n_orden, descripcion , fecha_arribo)
-	VALUES(%s,%s,%s,'%s','%s')
+	VALUES(%s,%s,%s,'%s','%s%s%s%s%s%s%s%s%s%s')
 	RETURNING id
 	;
-	"""%(id_usu, id_prov,n_orden, descripcion , fecha_arribo)
+	"""%(id_usu, id_prov,n_orden, descripcion , fecha_arribo[6],fecha_arribo[7],fecha_arribo[8],fecha_arribo[9],fecha_arribo[5],fecha_arribo[3],fecha_arribo[4],fecha_arribo[2],fecha_arribo[0],fecha_arribo[1])
 	cur.execute(sql)
 	conn.commit()
 	id_ped = cur.fetchone()

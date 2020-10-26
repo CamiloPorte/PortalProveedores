@@ -51,7 +51,7 @@
                             <div class="form-group row" >
                               <b>{{ form.fecha_de_arribo.label(class="col-sm-12 col-form-label") }}</b>
                                 {% if form.fecha_de_arribo.errors %}
-                                {{ form.descripcion(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Fecha de arribo") }}
+                                {{ form.fecha_de_arribo(class="form-control col-sm-10 form-control-user is-invalid" , placeholder= "Fecha de arribo DD/MM/AAAA") }}
                                     <div class="invalid-feedback">
                                         {% for error in form.fecha_de_arribo.errors %}
                                             <span>{{ error }}</span>
