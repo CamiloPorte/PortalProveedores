@@ -49,27 +49,30 @@ def obtener_pedidos():
 
 def obtener_pedidos_filtrados(codigo,nombre,numero_orden,proveedor):
 	if codigo != None:
-		sql ="""
-		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant
-		FROM pedido,proveedores, prod_pedido,productos
-		WHERE id_prov = proveedores.id
-		AND prod_pedido.codigo = productos.codigo
-		AND prod_pedido.id_ped = pedido.id
-		AND productos.codigo = '%s'
-		; 
-		"""%(codigo.upper())
-		cur.execute(sql)
-		results = cur.fetchall()
-		return results
+		if len(codigo) != 0:
+			sql ="""
+			SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant
+			FROM pedido,proveedores, prod_pedido,productos
+			WHERE id_prov = proveedores.id
+			AND prod_pedido.codigo = productos.codigo
+			AND prod_pedido.id_ped = pedido.id
+			AND productos.codigo = '%s'
+			; 
+			"""%(codigo.upper())
+			cur.execute(sql)
+			results = cur.fetchall()
+			return results
 
 	if nombre != None:
 		sql ="""
-		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,productos.descripcion
+		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,string_agg(productos.descripcion,', ')
 		FROM pedido,proveedores, prod_pedido,productos
 		WHERE id_prov = proveedores.id
 		AND prod_pedido.codigo = productos.codigo
 		AND prod_pedido.id_ped = pedido.id
-		AND productos.descripcion LIKE '%"""+nombre+"%';"
+		AND productos.descripcion LIKE '%"""+nombre.upper()+"""%'
+		GROUP BY (n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant)
+		;"""
 		cur.execute(sql)
 		results = cur.fetchall()
 		return results
@@ -136,16 +139,16 @@ def crear_producto(codigo,descripcion):
 	INSERT INTO productos (codigo, descripcion)
 	VALUES('%s','%s')
 	;
-	"""%(codigo.upper(), descripcion) 
+	"""%(codigo.upper(), descripcion.upper()) 
 	cur.execute(sql)
 	conn.commit()
 
-def insertar_producto(id_ped,codigo,descripcion):
+def insertar_producto(id_ped,codigo,cant):
 	sql="""
 	INSERT INTO prod_pedido (id_ped, codigo,cant)
 	VALUES(%s,'%s',%s)
 	;
-	"""%(id_ped,codigo.upper(), descripcion) 
+	"""%(id_ped,codigo.upper(), cant) 
 	cur.execute(sql)
 	conn.commit()
 
