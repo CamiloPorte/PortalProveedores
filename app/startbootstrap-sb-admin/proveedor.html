@@ -22,7 +22,7 @@
       {% if form.descripcion.errors %}
           {{ form.descripcion(class="form-control form-control-user py-4 col-sm-6 is-invalid", placeholder="Descripción del Proveedor y sus Productos") }}
           <div class="invalid-feedback">
-          {% for error in form.nombre_proveedor.errors %}
+          {% for error in form.descripcion.errors %}
               <span>{{ error }}</span>
           {% endfor %}
           </div>
