@@ -56,7 +56,7 @@ class crearUsuariosForm(FlaskForm):
     tipos=obtener_tipos()
     email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
     confirmacio_email=StringField('Confirmación correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
-    password = PasswordField( 'Contraseña', validators=[DataRequired(), Length(min=2, max=50)] )
+    password = PasswordField( 'Contraseña', validators=[DataRequired(), Length(min=2, max=255)] )
     nombre_usuario = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=50)])
     apellido1_usuario = StringField('Apellido Paterno', validators=[DataRequired(), Length(min=2, max=50)])
     apellido2_usuario = StringField('Apellido Materno', validators=[DataRequired(), Length(min=2, max=50)])
