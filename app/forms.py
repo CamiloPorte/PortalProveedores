@@ -15,10 +15,10 @@ class BuscarPedidoForm(FlaskForm):
     tupla = (0,"Elija un proveedor")
     proveedores.insert(0,tupla)
 
-    codigo = StringField('Código',validators=[Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
-    nombre = StringField('Nombre de producto',validators=[Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
+    codigo = StringField('Código')
+    nombre = StringField('Nombre de producto')
     numero_de_orden=IntegerField('Numero De Orden')
-    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional(),Regexp('/^[-\w\s]+$/', message="Solo puede ingresar caracteres alfanumericos")])
+    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional()])
     def validate(self):
         if not FlaskForm.validate(self):
             return False
