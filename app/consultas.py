@@ -105,12 +105,12 @@ def existe_proveedor(nombre):
 	sql ="""
 	SELECT id,nombre
 	FROM proveedores
-	WHERE nombre = "%s"
+	WHERE nombre = '%s'
 	;
 	"""%(nombre)
 	cur.execute(sql)
 	results = cur.fetchall()
-	if results != None:
+	if len(results) != 0:
 		return True
 	return False
 
