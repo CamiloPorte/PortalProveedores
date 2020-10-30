@@ -92,10 +92,18 @@ cur.execute(sql)
 
 ############ usuarios #########################
 
-password = generate_password_hash("12345",method = "sha256")
+password = generate_password_hash("felipeporte123",method = "sha256")
 sql="""
 INSERT INTO usuario (id_tipo ,correo ,contrasena ,nombre ,apellido1 ,apellido2 )
 VALUES(1, 'felipe.porte@pesaschile.cl','%s','Felipe','Porte','Moraga')
+;
+"""%(password)
+cur.execute(sql)
+
+password = generate_password_hash("jorgevilches123",method = "sha256")
+sql="""
+INSERT INTO usuario (id_tipo ,correo ,contrasena ,nombre ,apellido1 ,apellido2 )
+VALUES(1, 'jorge.vilches@pesaschile.cl','%s','Jorge','Vilches','Valladares')
 ;
 """%(password)
 cur.execute(sql)
