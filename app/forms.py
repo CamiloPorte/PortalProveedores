@@ -1,7 +1,7 @@
 from configuraciones import *
 import psycopg2
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateTimeField, HiddenField, IntegerField, DateField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, DateTimeField, HiddenField, IntegerField, DateField,DecimalField
 from wtforms.validators import DataRequired, Length, Email, EqualTo , ValidationError, InputRequired, Optional,Regexp
 from werkzeug.security import generate_password_hash, check_password_hash
 from consultas import *
@@ -17,7 +17,7 @@ class BuscarPedidoForm(FlaskForm):
 
     codigo = StringField('Código')
     nombre = StringField('Nombre de producto')
-    numero_de_orden=IntegerField('Numero De Orden')
+    numero_de_orden=DecimalField('Numero De Orden')
     proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional()])
     def validate(self):
         if not FlaskForm.validate(self):
@@ -46,7 +46,7 @@ class loginForm(FlaskForm):
         
 class ingresarPedidoForm(FlaskForm):
     proveedores = obtener_proveedores()
-    numero_de_orden=IntegerField('Numero De Orden', validators=[DataRequired()])
+    numero_de_orden=DecimalField('Numero De Orden', validators=[DataRequired()])
     descripcion=StringField('Descripción', validators=[DataRequired(), Length(min=2, max=255)])
     fecha_de_arribo=DateField('Fecha De Arribo', format='%d/%m/%Y',validators=[DataRequired()])
     proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores] ,validators=[DataRequired()],coerce = int)
