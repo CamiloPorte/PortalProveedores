@@ -55,7 +55,7 @@ CREATE TABLE pedido
  (id serial PRIMARY KEY ,
  id_usu integer,
  id_prov integer,
- n_orden integer,
+ n_orden decimal,
  descripcion varchar(255),
  fecha_arribo date,
  FOREIGN KEY (id_usu) REFERENCES usuario (id),
