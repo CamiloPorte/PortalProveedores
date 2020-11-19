@@ -64,30 +64,34 @@ def obtener_pedidos_filtrados(codigo,nombre,numero_orden,proveedor):
 			return results
 
 	if nombre != None:
-		sql ="""
-		SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,string_agg(productos.descripcion,', ')
-		FROM pedido,proveedores, prod_pedido,productos
-		WHERE id_prov = proveedores.id
-		AND prod_pedido.codigo = productos.codigo
-		AND prod_pedido.id_ped = pedido.id
-		AND productos.descripcion LIKE '%"""+nombre.upper()+"""%'
-		GROUP BY (n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant)
-		;"""
-		cur.execute(sql)
-		results = cur.fetchall()
-		return results
+		if len(nombre) != 0:
+			sql ="""
+			SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,string_agg(productos.descripcion,', ')
+			FROM pedido,proveedores, prod_pedido,productos
+			WHERE id_prov = proveedores.id
+			AND prod_pedido.codigo = productos.codigo
+			AND prod_pedido.id_ped = pedido.id
+			AND productos.descripcion LIKE '%"""+nombre.upper()+"""%'
+			GROUP BY (n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant)
+			;"""
+			cur.execute(sql)
+			results = cur.fetchall()
+			return results
 
-	sql ="""
-	SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id
-	FROM pedido,proveedores
-	WHERE id_prov = proveedores.id
-	AND id_prov = proveedores.id
-	AND id_prov = %s
-	AND n_orden = %s
-	;"""%(proveedor,numero_orden)
-	cur.execute(sql)
-	results = cur.fetchall()
-	return results
+	if proveedor != None and numero_orden != None :
+			if len(proveedor) != 0 and len(numero_orden) != 0:
+				sql ="""
+				SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id
+				FROM pedido,proveedores
+				WHERE id_prov = proveedores.id
+				AND id_prov = proveedores.id
+				AND id_prov = %s
+				AND n_orden = %s
+				;"""%(proveedor,numero_orden)
+				cur.execute(sql)
+				results = cur.fetchall()
+				return results
+	return obtener_pedidos()
 
 		
 

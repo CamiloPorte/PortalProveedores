@@ -32,7 +32,7 @@ class BuscarPedidoForm(FlaskForm):
 
 
 class loginForm(FlaskForm):
-    email = StringField('Correo electronico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
+    email = StringField('Correo electrónico', validators=[Email(), DataRequired(), Length(min=2, max=50)])
     password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=2, max=50)])
     def validate(self):
         results = datos_usuario(self.email.data)
