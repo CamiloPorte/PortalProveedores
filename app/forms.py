@@ -21,14 +21,12 @@ class botonesForm(FlaskForm):
 
 
 class BuscarPedidoForm(FlaskForm):
-    proveedores = obtener_proveedores()
-    tupla = (0,"Elija un proveedor")
-    proveedores.insert(0,tupla)
+
 
     codigo = StringField('Código')
     nombre = StringField('Nombre de producto')
     numero_de_orden=DecimalField('Numero De Orden')
-    proveedor=SelectField('Proveedor', choices=[(tipo[0],tipo[1])for tipo in proveedores], coerce=int, validators=[Optional()])
+    proveedor=SelectField('Proveedor', coerce=int, validators=[Optional()])
     def validate(self):
         if not FlaskForm.validate(self):
             return False

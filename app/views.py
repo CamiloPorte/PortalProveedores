@@ -54,11 +54,14 @@ def login():
 
 @app.route('/pedido', methods=["POST", "GET"])
 def pedido():
+	form = BuscarPedidoForm()
+	codigo_producto = request.form
+	pedidos = obtener_pedidos()
+	proveedores = obtener_proveedores()
+	proveedores.insert(0,(0,"Elija un proveedor"))
+	form.proveedor.choices =[(tipo[0],tipo[1])for tipo in proveedores]
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
-			form = BuscarPedidoForm()
-			codigo_producto = request.form
-			pedidos = obtener_pedidos()
 			if pedidos == None:
 				pedidos = ()
 			if request.method == "POST" and form.validate():
@@ -70,10 +73,13 @@ def pedido():
 
 @app.route('/index', methods=["POST", "GET"])
 def vista_admin():
+	form = BuscarPedidoForm()
+	pedidos = obtener_pedidos()
+	proveedores = obtener_proveedores()
+	proveedores.insert(0,(0,"Elija un proveedor"))
+	form.proveedor.choices =[(tipo[0],tipo[1])for tipo in proveedores]
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
-			form = BuscarPedidoForm()
-			pedidos = obtener_pedidos()
 			return render_template("pedido.html",vista = "Pedidos",pedidos = pedidos,form = form)
 		else:
 			return redirect(url_for('login'))
@@ -165,9 +171,6 @@ def proveedor():
 			return redirect(url_for('login'))
 	else:
 		return redirect(url_for('login'))
-@app.route('/lista_proveedores', methods=["POST", "GET"])
-def listaproveedor():
-	return render_template("lista_proveedores.html")	
 
 
 
@@ -198,13 +201,13 @@ def upload():
 
 
 
-@app.route('/aux', methods = ["POST", "GET"])
-def aux():
-	return render_template("404.html")
+# @app.route('/aux', methods = ["POST", "GET"])
+# def aux():
+# 	return render_template("404.html")
 
-@app.route('/aux2', methods = ["POST", "GET"])
-def aux2():
-	return render_template("tables.html")
+# @app.route('/aux2', methods = ["POST", "GET"])
+# def aux2():
+# 	return render_template("tables.html")
 
 
 
