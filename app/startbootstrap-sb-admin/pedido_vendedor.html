@@ -12,7 +12,7 @@
                 </button>
               </h5>
             </div>
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
                     <div class="container">
                         <div class="mx-auto">
@@ -138,6 +138,9 @@
                   Descripción: {{pedido[3]}}
                 </div>
                 {% if pedido|length >= 7 %}
+                <div class="col-sm">
+                  <b> {{pedido[8]}}</b>
+                </div>
                 <div class="col-sm">
                   Unidades: {{pedido[6]}}
                 </div>

@@ -65,7 +65,7 @@ def obtener_pedidos_filtrados(codigo,nombre,numero_orden,proveedor):
 	if codigo != None:
 		if len(codigo) != 0:
 			sql ="""
-			SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant
+			SELECT n_orden,nombre,proveedores.descripcion,pedido.descripcion, to_char(fecha_arribo,'DD-MM-YYYY'),pedido.id,cant,productos.codigo
 			FROM pedido,proveedores, prod_pedido,productos
 			WHERE id_prov = proveedores.id
 			AND prod_pedido.codigo = productos.codigo
