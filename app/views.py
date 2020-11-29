@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from openpyxl import load_workbook
 import openpyxl_dictreader
 import pandas as pd
+import re
 
 
 app.secret_key = "PCPORTAL"
@@ -84,11 +85,22 @@ def crear_usuario():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearUsuariosForm()
-			usuarios = obtener_usuarios()
-			if request.method == "POST" and form.validate():
-				datos = request.form
-				crear_usuarios(datos['email'],datos['password'],datos['nombre_usuario'],datos['apellido1_usuario'],datos['apellido2_usuario'],datos['tipo_cuenta'])
+			datos = request.form
+			if request.method == "POST" and datos.get('desactivar') != None:
+				cambiar_estado(datos['id_usuario'],False)
+				usuarios = obtener_todos_usuarios()
 				return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
+
+			if request.method == "POST" and datos.get('activar') != None:
+				cambiar_estado(datos['id_usuario'],True)
+				usuarios = obtener_todos_usuarios()
+				return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
+
+			if request.method == "POST" and form.validate():
+				crear_usuarios(datos['email'],datos['password'],datos['nombre_usuario'],datos['apellido1_usuario'],datos['apellido2_usuario'],datos['tipo_cuenta'])
+				usuarios = obtener_todos_usuarios()
+				return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
+			usuarios = obtener_todos_usuarios()
 			return render_template("register.html",vista="Crear usuario", form=form, usuarios = usuarios)
 		else:
 			return redirect(url_for('login'))
@@ -97,19 +109,55 @@ def crear_usuario():
 
 @app.route('/detalle/<id>', methods=["POST", "GET"])
 def detalle(id):
-	datos = obtener_productos_pedido(id)
-	return render_template("detalle.html", vista="Detalle Pedido", datos = datos)
+	if re.findall("\A[0-9]+\Z", str(id)):
+		form = botonesForm()
+		boton = request.form
+		if request.method == "POST" and boton.get('confirmar') != None:
+			eliminar_pedido(id)
+			mensaje = "Orden eliminada."
+			datos = list()
+			return render_template("detalle.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje, form = form)
+
+		if request.method == "POST" and boton.get('editar') != None and form.validate():
+			mensaje = "Orden actualizada"
+			actualizar_orden(boton['proveedor'],boton['numero_de_orden'],boton['descripcion'],boton['fecha_de_arribo'],boton['id_oferta'])
+			datos = obtener_productos_pedido(id)
+			return render_template("detalle.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje, form = form)
+
+		datos = obtener_productos_pedido(id)
+		if len(datos) == 0:
+			datos = list()
+			mensaje = "Orden no encontrada."
+			return render_template("detalle.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje, form = form)
+
+		mensaje = ""
+		return render_template("detalle.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje, form = form)
+	datos = list()
+	mensaje = "Orden no encontrada."
+	return render_template("detalle.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje)
 
 @app.route('/proveedor', methods=["POST", "GET"])
 def proveedor():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = crearProveedorForm()
-			proveedores = obtener_proveedores()
+			datos = request.form
+			if request.method == "POST" and datos.get('desactivar') != None:
+				cambiar_estado_proveedor(datos['id_proveedor'],False)
+				proveedores = obtener_proveedores_todos()
+				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
+
+			if request.method == "POST" and datos.get('activar') != None:
+				cambiar_estado_proveedor(datos['id_proveedor'],True)
+				proveedores = obtener_proveedores_todos()
+				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
+
 			if request.method == 'POST' and form.validate():
 				datos = request.form
 				crear_proveedor(datos['nombre_proveedor'],datos['descripcion'])
+				proveedores = obtener_proveedores_todos()
 				return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
+			proveedores = obtener_proveedores_todos()
 			return render_template("proveedor.html", vista="Ingresar Proveedor", form=form, proveedores = proveedores)
 		else:
 			return redirect(url_for('login'))
@@ -135,9 +183,11 @@ def upload():
 				data_xls = pd.read_excel(f)
 				arr=data_xls.to_numpy()
 				filas, columnas= arr.shape
-				crear_pedido(session["usuario"],datos['proveedor'],datos['numero_de_orden'],datos['descripcion'],datos['fecha_de_arribo'],arr)
-
-				return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Pedidos actualizados exitosamente", vista ="Ingresar Pedidos", form=form)
+				funciona = crear_pedido(session["usuario"],datos['proveedor'],datos['numero_de_orden'],datos['descripcion'],datos['fecha_de_arribo'],arr)
+				if funciona == True:
+					return render_template("upload2.html",data=arr,cant=filas,aux=1,message="Orden ingresada exitosamente.", vista ="Ingresar Pedidos", form=form)
+				else:
+					return render_template("upload2.html",data=arr,cant=filas,aux=1,message="No puede haber campos vacíos de información o se ha sobrepasado el límite de carácteres.", vista ="Ingresar Pedidos", form=form)
 			return render_template("upload2.html",aux=0,message="Por favor cargue un archivo con extensión xlsx.", vista ="Ingresar Pedidos", form=form)
 		return redirect(url_for('login'))
 	return redirect(url_for('login')) 

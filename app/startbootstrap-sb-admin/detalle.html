@@ -1,6 +1,113 @@
 {% extends "vista_admin.html" %}
 
 {% block content %}
+{% if datos|length > 0 %}
+  <div class="row ">
+    <div class="col">
+     <label><h4>Número de orden:</h4></label><h4> <b>{{datos[0][3]}}</b></h4>
+    </div>
+    <div class="col">
+      <label><h4>Descripción de orden:</h4></label><h4> <b>{{datos[0][4]}}</b></h4>
+    </div>
+  </div>
+  <div class="row ">
+    <div class="col">
+     <label><h4>ETA: </h4></label><h4><b>{{datos[0][5]}}</b></h4>
+    </div>
+    <div class="col">
+      <label><h4>Proveedor: </h4></label><h4><b>{{datos[0][6]}}</b></h4>
+    </div>
+  </div>
+  <form method="POST" enctype=multipart/form-data>
+  {{ form.csrf_token() }}
+    <div class="row ">
+      <div class="col">
+      <button type="button" class="btn btn-dark btn-lg col-md-auto" data-toggle="modal" data-target=".bd-example-modal-lg">
+        Editar
+      </button>
+      <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Editar Orden</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    {{ form.id_oferta(value=datos[0][9]) }}
+                    <b>{{ form.proveedor.label(class="col-form-label") }}</b>
+                    {% set z = form.proveedor.process_data(datos[0][7])%}
+                    {% if form.proveedor.errors %}
+                    {{ form.proveedor(class="form-control form-control-user is-invalid" , value=(datos[0][7])) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.proveedor.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.proveedor(class="form-control form-control-user" , value=(datos[0][7])) }}
+                    {% endif %}
+                  </div>
+                  <div class="col-sm">
+                    <b>{{ form.numero_de_orden.label(class="col-form-label") }}</b>
+                    {% if form.numero_de_orden.errors %}
+                    {{ form.numero_de_orden(class="form-control form-control-user is-invalid" , value=datos[0][3]) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.numero_de_orden.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.numero_de_orden(class="form-control form-control-user" , value=datos[0][3]) }}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <b>{{ form.descripcion.label(class="col-form-label") }}</b>
+                    {% if form.descripcion.errors %}
+                    {{ form.descripcion(class="form-control form-control-user is-invalid" , value=datos[0][4]) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.descripcion.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.descripcion(class="form-control form-control-user" ,value=datos[0][4]) }}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <b>{{ form.fecha_de_arribo.label(class="col-form-label") }}</b>
+                    {% if form.fecha_de_arribo.errors %}
+                    {{ form.fecha_de_arribo(class="form-control form-control-user is-invalid" , value=datos[0][5] ) }}
+                        <div class="invalid-feedback">
+                            {% for error in form.fecha_de_arribo.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.fecha_de_arribo(class="form-control form-control-user" ,value=datos[0][5] ) }}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              {{ form.editar(class="btn btn-success btn-lg col-md-auto") }}
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </form>
+{% endif %}
 <table class="table table-hover">
   <thead>
     <tr>
@@ -21,6 +128,47 @@
     {%endfor%}
   </tbody>
 </table>
+{% if datos %}
+<!-- Button trigger modal -->
+<div class="container">
+  <div class="row justify-content-center">
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+        Eliminar Orden
+      </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmar eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estas seguro que deseas eliminar esta orden? Luego de eliminarla no habrá forma de recuperarla.
+      </div>
+      <div class="modal-footer">
+        <form method="POST">
+          {{ form.csrf_token() }}
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        {{ form.confirmar(class="btn btn-danger") }}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% if mensaje|length > 0%}
+<div class="alert alert-danger" role="alert">
+  {{mensaje}}
+</div>
+{% endif %}
+
   
 
 

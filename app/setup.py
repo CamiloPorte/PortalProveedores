@@ -22,7 +22,8 @@ sql="""
 CREATE TABLE proveedores
   (id serial PRIMARY KEY,
   nombre varchar(50),
-  descripcion varchar(255)
+  descripcion varchar(255),
+  estado boolean
    );
 """
 cur.execute(sql)
@@ -30,7 +31,7 @@ cur.execute(sql)
 sql="""
 CREATE TABLE productos
   (codigo varchar(20) PRIMARY KEY,
-  descripcion varchar(255)
+  descripcion varchar(150)
    );
 """
 cur.execute(sql)
@@ -44,6 +45,7 @@ CREATE TABLE usuario
    nombre varchar(50),
    apellido1 varchar(50),
    apellido2 varchar(50),
+   estado boolean,
    FOREIGN KEY (id_tipo) REFERENCES tipos(id)
   );
 """
@@ -56,7 +58,7 @@ CREATE TABLE pedido
  id_usu integer,
  id_prov integer,
  n_orden decimal,
- descripcion varchar(255),
+ descripcion varchar(150),
  fecha_arribo date,
  FOREIGN KEY (id_usu) REFERENCES usuario (id),
  FOREIGN KEY (id_prov) REFERENCES proveedores(id) 
@@ -70,7 +72,7 @@ CREATE TABLE prod_pedido
  codigo varchar(20),
  cant integer,
  PRIMARY KEY (id_ped, codigo, cant),
- FOREIGN KEY (id_ped) REFERENCES pedido (id),
+ FOREIGN KEY (id_ped) REFERENCES pedido (id) ON DELETE CASCADE,
  FOREIGN KEY (codigo) REFERENCES productos (codigo)
 );
 """

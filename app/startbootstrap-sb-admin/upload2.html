@@ -18,7 +18,7 @@
                                   {{ form.proveedor(class="form-control col-sm-2 offset-md-1 form-control-user" , placeholder="Ingrese tipo") }}
                               {% endif %}
                               <h5 class="col-sm-1 my-2 offset-md-1"> Ó </h5>
-                              <a href="proveedor">
+                              <a href="/proveedor">
                               <button type="button" class="btn btn-info"  >Añadir</button>
                               </a>
                             </div>
@@ -90,8 +90,16 @@
                             <tbody>
                               {%for i in range(cant)%} 
                               <tr>
-                                <td>{{data[i][1]}}</td>
-                                <td>{{data[i][2]}}</td>
+                                <td>
+                                {% if data[i][1]|string != 'nan' %}
+                                {{data[i][1]}}
+                                {% endif %}
+                                </td>
+                                <td>
+                                {% if data[i][2]|string != 'nan' %}
+                                {{data[i][2]}}
+                                {% endif %}
+                                </td>
                                 <td>{{data[i][4]}}</td>
                               </tr>
                               {%endfor%}

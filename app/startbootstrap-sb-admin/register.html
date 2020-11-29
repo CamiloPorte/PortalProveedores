@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card-body">
     <form method="POST" action="crear_usuario">
-        {{ form.hidden_tag() }}
+        {{ form.csrf_token() }}
         <div class="form-group">
             {{ form.nombre_usuario.label(class="small mb-1") }}
             {% if form.nombre_usuario.errors %}
@@ -111,30 +111,42 @@
             <button type="submit" href="crear_usuario" class="form-group mt-4 mb-0 btn btn-success">Create Cuenta</button>
             <div class="form-group mt-4 mb-0"><a class="btn btn-danger btn-block" onclick="history.back();">Volver</a></div>
         </div>
-    </form>
 </div>
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Tipo de cuenta</th>
-        <th scope="col">Nombres</th>
-        <th scope="col">Apellido Materno</th>
-        <th scope="col">Apellido Paterno</th>
-        <th scope="col">Correo</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%for item in usuarios%} 
-      <tr>
-        <th scope="row">{{loop.index}}</th>
-        <td>{{item[0]}}</td>
-        <td>{{item[1]}}</td>
-        <td>{{item[2]}}</td>
-        <td>{{item[3]}}</td>
-        <td>{{item[4]}}</td>
-      </tr>
-      {%endfor%}
-    </tbody>
-</table>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Tipo de cuenta</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellido Materno</th>
+            <th scope="col">Apellido Paterno</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%for item in usuarios%}
+          <form method="POST" action="crear_usuario">
+            {{ form.csrf_token() }} 
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td>{{item[4]}}</td>
+
+            {{ form.id_usuario(value=item[5]) }}
+            {% if item[6] == true %}
+            <td>Activo</td>
+            <td>{{ form.desactivar(class="btn btn-danger") }}</td>
+            {% else %}
+            <td>{{ form.activar(class="btn btn-success") }}</td>
+            <td>Eliminado</td>
+            {% endif %}
+          </tr>
+          </form>
+          {%endfor%}
+        </tbody>
+    </table>
 {%endblock%}

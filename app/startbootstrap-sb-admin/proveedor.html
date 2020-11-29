@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card-body">
   <form action="proveedor" method="POST">
-    {{ form.hidden_tag() }}
+    {{ form.csrf_token() }}
     <div class="form-group">
       <b>{{ form.nombre_proveedor.label() }}</b>
       {% if form.nombre_proveedor.errors %}
@@ -42,15 +42,28 @@
       <th scope="col">#</th>
       <th scope="col">Nombre de proveedor</th>
       <th scope="col">Descripción</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Id</th>
     </tr>
   </thead>
   <tbody>
     {%for item in proveedores%} 
+    <form action="proveedor" method="POST">
+    {{ form.csrf_token() }}
     <tr>
-      <th scope="row">{{loop.index}}</th>
-      <td>{{item[1]}}</td>
-      <td>{{item[2]}}</td>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{item[1]}}</td>
+        <td>{{item[2]}}</td>
+        {{ form.id_proveedor(value=item[0]) }}
+        {% if item[3] == true %}
+        <td>Activo</td>
+        <td>{{ form.desactivar(class="btn btn-danger") }}</td>
+        {% else %}
+        <td>{{ form.activar(class="btn btn-success") }}</td>
+        <td>Eliminado</td>
+        {% endif %}
     </tr>
+    </form>
     {%endfor%}
   </tbody>
 </table>
