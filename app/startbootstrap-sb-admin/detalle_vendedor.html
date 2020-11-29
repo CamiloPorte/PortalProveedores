@@ -21,7 +21,12 @@
     {%endfor%}
   </tbody>
 </table>
-  
+
+{% if mensaje|length > 0%}
+<div class="alert alert-danger" role="alert">
+  {{mensaje}}
+</div>
+{% endif %}
 
 
 {%endblock%}

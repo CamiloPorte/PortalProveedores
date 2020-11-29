@@ -220,11 +220,14 @@ def upload():
 #unica vista de un vendedor
 @app.route('/index_venta', methods=["POST", "GET"])
 def vista_vendedor():
+	form = BuscarPedidoForm()
+	codigo_producto = request.form
+	pedidos = obtener_pedidos()
+	proveedores = obtener_proveedores()
+	proveedores.insert(0,(0,"Elija un proveedor"))
+	form.proveedor.choices =[(tipo[0],tipo[1])for tipo in proveedores]
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 2:
-			form = BuscarPedidoForm()
-			codigo_producto = request.form
-			pedidos = obtener_pedidos()
 			if pedidos == None:
 				pedidos = ()
 			if request.method == "POST" and form.validate():
@@ -236,5 +239,15 @@ def vista_vendedor():
 
 @app.route('/detalle_v/<id>', methods=["POST", "GET"])
 def detalle_v(id):
-	datos = obtener_productos_pedido(id)
-	return render_template("detalle_vendedor.html", vista="Detalle Pedido", datos = datos)
+	if re.findall("\A[0-9]+\Z", str(id)):
+		datos = obtener_productos_pedido(id)
+		if len(datos) == 0:
+			datos = list()
+			mensaje = "Orden no encontrada."
+			return render_template("detalle_vendedor.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje)
+
+		mensaje = ""
+		return render_template("detalle_vendedor.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje)
+	datos = list()
+	mensaje = "Orden no encontrada."
+	return render_template("detalle_vendedor.html", vista="Detalle Pedido", datos = datos,mensaje = mensaje)
