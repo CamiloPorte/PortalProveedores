@@ -111,6 +111,8 @@ def crear_usuario():
 def detalle(id):
 	if re.findall("\A[0-9]+\Z", str(id)):
 		form = botonesForm()
+		proveedores = obtener_proveedores()
+		form.proveedor.choices =[(tipo[0],tipo[1])for tipo in proveedores]
 		boton = request.form
 		if request.method == "POST" and boton.get('confirmar') != None:
 			eliminar_pedido(id)
@@ -174,6 +176,8 @@ def upload():
 	if session.get('usuario')!= None:
 		if obtener_tipo(session["usuario"])[1] == 1:
 			form = ingresarPedidoForm()
+			proveedores = obtener_proveedores()
+			form.proveedor.choices =[(tipo[0],tipo[1])for tipo in proveedores]
 			if request.method == 'POST' and form.validate():
 				datos = request.form
 				f = request.files['file']
