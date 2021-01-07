@@ -54,7 +54,7 @@ def obtener_pedidos():
 	FROM pedido,proveedores
 	WHERE id_prov = proveedores.id
 	AND (extract(MONTH FROM age(fecha_arribo,current_date))) > -1
-	ORDER BY fecha_arribo
+	ORDER BY fecha_arribo DESC
 	; 
 	"""
 	cur.execute(sql)
@@ -185,6 +185,28 @@ def insertar_producto(id_ped,codigo,cant):
 	"""%(id_ped,codigo.upper(), cant) 
 	cur.execute(sql)
 
+def verificar_producto(id_pedido,codigo):
+	sql="""
+	SELECT *
+	FROM prod_pedido
+	WHERE id_ped = %s
+	AND codigo = '%s'
+	;
+	"""%(id_pedido,codigo)
+	cur.execute(sql)
+	results = cur.fetchall()
+	return results
+
+def actualizar_producto(id_ped,codigo,cant):
+	sql="""
+	UPDATE prod_pedido
+	SET cant = cant + %s
+	WHERE id_ped = %s
+	AND codigo = '%s'
+	;
+	"""%(cant, id_ped,codigo)
+	cur.execute(sql)
+
 def crear_pedido(id_usu, id_prov, n_orden,descripcion , fecha_arribo, excel):
 	sql="""
 	INSERT INTO pedido (id_usu, id_prov,n_orden, descripcion , fecha_arribo)
@@ -218,7 +240,10 @@ def crear_pedido(id_usu, id_prov, n_orden,descripcion , fecha_arribo, excel):
 		if id_ped[0] == None or len(excel[i][1]) == 0 or excel[i][4] == None or len(str(excel[i][1])) > 20:
 			conn.rollback() 
 			return False
-		insertar_producto(id_ped[0],excel[i][1],excel[i][4])
+		if len(verificar_producto(id_ped[0],excel[i][1])) == 0:
+			insertar_producto(id_ped[0],excel[i][1],excel[i][4])
+		else:
+			actualizar_producto(id_ped[0],excel[i][1],excel[i][4])
 	conn.commit()
 	return True
 
